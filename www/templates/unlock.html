@@ -1,0 +1,30 @@
+<ion-view view-title="PassMan">
+    <ion-content>
+
+        <div class="row" ng-show="!isPINSet">
+            <div class="col">
+                <h4 class="badge">Set Your PIN</h4>
+
+                <form name="pinSettingForm" ng-submit="pinSettingFormSubmission(pinSettingForm)" novalidate>
+                    <ion-item class="item-input">
+                        <input type="tel" placeholder="Enter PIN" ng-model="pinForm.pin" ng-minlength="0" ng-maxlength="4" required/>
+                    </ion-item>
+                    <ion-item class="item-input">
+                        <input type="tel" placeholder="Confirm PIN" ng-model="pinForm.confirmPin"  ng-maxlength="4" required/>
+                    </ion-item>
+
+                    <button type="submit" class="button button-block button-outline">Set PIN</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="row" ng-show="isPINSet">
+            <div class="col">
+                <ion-item class="item-input">
+                    <input type="tel" placeholder="Enter 4-digit PIN" ng-model="loginPIN"
+                           ng-change="checkPin(loginPIN)"/>
+                </ion-item>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>
