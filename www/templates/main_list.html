@@ -3,22 +3,32 @@
         <a class="button button-dark button-outline icon ion-plus" ui-sref="add_item"></a>
     </ion-nav-buttons>
     <ion-content>
-        <ion-list class="list-inset">
-            <ion-item class="item-input">
-                <i class="icon ion-search placeholder-icon"></i>
-                <input type="search" placeholder="Search..." />
-            </ion-item>
-        </ion-list>
+        <div class="row">
+            <div class="col padding">
+                <ion-list class="list-inset">
+                    <ion-item class="item-input">
+                        <i class="icon ion-search placeholder-icon"></i>
+                        <input type="search" placeholder="Search..." />
+                    </ion-item>
+                </ion-list>
+            </div>
+        </div>
 
-        <ion-list show-delete="false" can-swipe="true">
-            <ion-item>
-                Hello, list item!
-                <ion-option-button class="button-positive">Share</ion-option-button>
-            </ion-item>
-            <ion-item>
-                Hello, list item!
-                <ion-option-button class="button-positive">Share</ion-option-button>
-            </ion-item>
-        </ion-list>
+        <div class="row row-no-padding">
+            <div class="col">
+                <ion-list show-delete="false" can-swipe="true">
+                    <ion-item>
+                        Hello, list item!
+                        <ion-option-button class="button-positive">Share</ion-option-button>
+                    </ion-item>
+                    <ion-item>
+                        Hello, list item!
+                        <ion-option-button class="button-positive">Share</ion-option-button>
+                    </ion-item>
+                </ion-list>
+            </div>
+        </div>
+
+
     </ion-content>
 </ion-view>
