@@ -3,10 +3,11 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('PassMan', ['ionic', 'PassMan.controllers', 'PassMan.services', 'PassMan.utils'])
+angular.module('PassMan', ['ionic', 'PassMan.controllers', 'PassMan.services', 'PassMan.filters', 'PassMan.utils'])
 
-    .run(['$ionicPlatform', function ($ionicPlatform) {
+    .run(['$ionicPlatform', '$utilityFunctions', '$rootScope', function ($ionicPlatform, $utilityFunctions, $rootScope) {
         $ionicPlatform.ready(function () {
+            console.log('run start');
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
             if (window.cordova && window.cordova.plugins.Keyboard) {
@@ -16,6 +17,22 @@ angular.module('PassMan', ['ionic', 'PassMan.controllers', 'PassMan.services', '
                 StatusBar.styleDefault();
             }
 
+            //creating the database
+            $utilityFunctions.DB.create();
+            $utilityFunctions.DB.createTables();
+
+
+            //setting the initial PIN set value to false
+            var isPINSet = $utilityFunctions.localStorage.getItem('isPINSet');
+
+            if (isPINSet === null) {
+                console.log("PIN not set. Setting to false");
+                $utilityFunctions.localStorage.setItem('isPINSet', false);
+            }
+
+            $rootScope.masterPIN = '';
+            $rootScope.itemList = [];
+            console.log('run end');
         });
     }])
     .config(['$stateProvider', '$urlRouterProvider', '$utilityFunctionsProvider', function ($stateProvider, $urlRouterProvider, $utilityFunctionsProvider) {
@@ -39,13 +56,7 @@ angular.module('PassMan', ['ionic', 'PassMan.controllers', 'PassMan.services', '
 
         $urlRouterProvider.otherwise('/unlock');
 
-        //setting the initial PIN set value to false
-        var isPINSet = $utilityFunctionsProvider.localStorage.getItem('isPINSet');
 
-        if (isPINSet === null) {
-            console.log("PIN not set. Setting to false");
-            $utilityFunctionsProvider.localStorage.setItem('isPINSet', false);
-        }
-
+        $utilityFunctionsProvider.DB.config('PassMan.db');
         console.log("config end");
     }]);

@@ -4,24 +4,24 @@
         <a class="button button-clear ion-chevron-left" ng-click="$ionicGoBack($event)"></a>
     </ion-nav-buttons>
     <ion-content>
-        <div class="row">
-            <div class="col">
-                <form name="addItemForm" ng-submit="addItemFormSubmit(addItemForm)" novalidate>
-                    <ion-item class="item-input">
-                        <input type="text" placeholder="Enter Title" ng-model="addItemForm.title" ng-minlength="0"
-                               ng-maxlength="4" required/>
-                    </ion-item>
-                    <ion-item class="item-input">
-                        <input type="text" placeholder="Enter Username" ng-model="addItemForm.username" ng-maxlength="4"
-                               required/>
-                    </ion-item>
-                    <ion-item class="item-input">
-                        <input type="text" placeholder="Enter Password" ng-model="addItemForm.password" ng-maxlength="4"
-                               required/>
-                    </ion-item>
-                    <button type="submit" class="button button-block button-outline">Add Entry</button>
-                </form>
+
+        <form name="addItemForm" ng-submit="addItemFormSubmit(addItemForm)" novalidate>
+            <div class="list">
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">Title</span>
+                    <input type="text" placeholder="Title" ng-model="addItem.title" required>
+                </label>
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">Username</span>
+                    <input type="text" placeholder="Username" ng-model="addItem.username" required>
+                </label>
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">Password</span>
+                    <input type="text" placeholder="Password" ng-model="addItem.password" required>
+                </label>
             </div>
-        </div>
+            <button type="submit" class="button button-block button-outline button-no-side">Add Entry</button>
+        </form>
+
     </ion-content>
 </ion-view>

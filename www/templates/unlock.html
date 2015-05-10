@@ -20,11 +20,15 @@
 
         <div class="row" ng-show="isPINSet">
             <div class="col">
-                <ion-item class="item-input">
+                <ion-item class="item-input item-floating-label">
                     <input type="tel" placeholder="Enter 4-digit PIN" ng-model="loginPIN"
                            ng-change="checkPin(loginPIN)"/>
                 </ion-item>
+
+
             </div>
         </div>
+
+
     </ion-content>
 </ion-view>

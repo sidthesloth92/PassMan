@@ -2,3 +2,22 @@
 .popup-body {
     text-align: center;
 }
+
+.button-no-side  {
+    border-left: 0px !important;
+    border-right: 0px !important;
+}
+
+.item.accordion-content {
+    padding-top: 0;
+    padding-bottom: 0;
+    -webkit-transition: .09s all linear !important;
+    -moz-transition: .09s all linear !important;
+    -o-transition: .09s all linear !important;
+    transition: .09s all linear !important;
+}
+
+.item.accordion-content.ng-hide {
+    line-height: 0px;
+}
+

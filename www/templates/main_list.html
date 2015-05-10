@@ -17,14 +17,17 @@
         <div class="row row-no-padding">
             <div class="col">
                 <ion-list show-delete="false" can-swipe="true">
-                    <ion-item>
-                        Hello, list item!
-                        <ion-option-button class="button-positive">Share</ion-option-button>
-                    </ion-item>
-                    <ion-item>
-                        Hello, list item!
-                        <ion-option-button class="button-positive">Share</ion-option-button>
-                    </ion-item>
+                    <div ng-repeat="item in itemList">
+                        <ion-item ng-click="toggleItemShown(item)" ng-class="{ active : isItemShown(item)}">
+                            {{ item.title | decrypt }}
+                            <ion-option-button class="button-calm button-outline">Update</ion-option-button>
+                            <ion-option-button class="button-assertive button-outline">Delete</ion-option-button>
+                        </ion-item>
+                        <ion-item ng-show="isItemShown(item)" class="accordion-content">
+                            {{ item.username | decrypt }}
+                            {{ item.password | decrypt }}
+                        </ion-item>
+                    </div>
                 </ion-list>
             </div>
         </div>
