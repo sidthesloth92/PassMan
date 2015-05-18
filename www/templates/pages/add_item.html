@@ -1,7 +1,7 @@
 <ion-view view-title="Add New Entry">
 
     <ion-nav-buttons side="left">
-        <a class="button button-clear ion-chevron-left" ng-click="$ionicGoBack($event)"></a>
+        <a class="button button-clear ion-chevron-left ion" ng-click="$ionicGoBack($event)"></a>
     </ion-nav-buttons>
     <ion-content>
 
@@ -20,7 +20,10 @@
                     <input type="text" placeholder="Password" ng-model="addItem.password" required>
                 </label>
             </div>
-            <button type="submit" class="button button-block button-outline button-no-side">Add Entry</button>
+            <button type="submit" class="button button-block button-outline button-no-side">
+                <span ng-show="action == 'add'">Add Entry</span>
+                <span ng-show="action == 'edit'">Edit Entry</span>
+            </button>
         </form>
 
     </ion-content>

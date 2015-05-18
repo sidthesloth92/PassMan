@@ -86,6 +86,17 @@ angular.module('PassMan.services', [])
                 });
 
                 return deferred.promise;
+            },
+            deleteEntry : function(eid) {
+                var deferred = $q.defer();
+
+                $utilityFunctions.DB.deleteEntry(eid).then(function() {
+                    deferred.resolve();
+                }, function() {
+                    deferred.reject();
+                });
+
+                return deferred.promise;
             }
         };
     }])
@@ -100,6 +111,65 @@ angular.module('PassMan.services', [])
 
                 $utilityFunctions.DB.insertEntry(encryptedTitle, encryptedUsername, encryptedPassword).then(function (result) {
                     deferred.resolve();
+                }, function (error) {
+                    deferred.reject();
+                });
+
+                return deferred.promise;
+            },
+            editItemFormSubmit : function(item, key, eid) {
+                var deferred = $q.defer();
+
+                var encryptedTitle = $utilityFunctions.CRYPT.encrypt(item.title, key);
+                var encryptedUsername = $utilityFunctions.CRYPT.encrypt(item.username, key);
+                var encryptedPassword = $utilityFunctions.CRYPT.encrypt(item.password, key);
+
+                $utilityFunctions.DB.editEntry(encryptedTitle, encryptedUsername, encryptedPassword, eid).then(function (result) {
+                    deferred.resolve();
+                }, function (error) {
+                    deferred.reject();
+                });
+
+                return deferred.promise;
+            },
+            retrieveEntry : function(eid, key) {
+                var deferred = $q.defer();
+
+                $utilityFunctions.DB.retrieveEntry(eid).then(function(result) {
+                    if(result.length > 0) {
+                        var returnedItem = result.item(0);
+                        var item = {};
+                        item.eid = returnedItem.eid;
+                        item.title = $utilityFunctions.CRYPT.decrypt(returnedItem.entry_title, key);
+                        item.username = $utilityFunctions.CRYPT.decrypt(returnedItem.entry_username, key);
+                        item.password = $utilityFunctions.CRYPT.decrypt(returnedItem.entry_password, key);
+                        deferred.resolve(item);
+                    }
+                    else {
+                        deferred.reject();
+                    }
+                }, function (error) {
+                    deferred.reject();
+                });
+
+                return deferred.promise;
+            },
+            deleteEntry : function() {
+                var deferred = $q.defer();
+
+                $utilityFunctions.DB.deleteEntry(eid).then(function(result) {
+                    if(result.length > 0) {
+                        var returnedItem = result.item(0);
+                        var item = {};
+                        item.eid = returnedItem.eid;
+                        item.title = $utilityFunctions.CRYPT.decrypt(returnedItem.entry_title, key);
+                        item.username = $utilityFunctions.CRYPT.decrypt(returnedItem.entry_username, key);
+                        item.password = $utilityFunctions.CRYPT.decrypt(returnedItem.entry_password, key);
+                        deferred.resolve(item);
+                    }
+                    else {
+                        deferred.reject();
+                    }
                 }, function (error) {
                     deferred.reject();
                 });

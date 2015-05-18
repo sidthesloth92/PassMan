@@ -1,0 +1,11 @@
+<div class="custom_bottom_menu_overlay col">
+    <div class="custom_bottom_menu_wrapper">
+        <a class="button button-clear icon ion-minus col slide_up_button" ng-click="toggleShow()"></a>
+
+        <div class="custom_bottom_menu" ng-show="isShown">
+            <ul class="list text-center">
+                <li ng-repeat="menuItem in menuItems" class="item button-no-side">{{ menuItem.label }}</li>
+            </ul>
+        </div>
+    </div>
+</div>

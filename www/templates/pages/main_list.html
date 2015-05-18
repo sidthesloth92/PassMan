@@ -1,6 +1,6 @@
 <ion-view view-title="PassMan">
     <ion-nav-buttons side="right">
-        <a class="button button-dark button-outline icon ion-plus" ui-sref="add_item"></a>
+        <a class="button button-dark button-outline icon ion-plus" ui-sref="add_item({ action : 'add'})"></a>
     </ion-nav-buttons>
     <ion-content>
         <div class="row">
@@ -20,8 +20,8 @@
                     <div ng-repeat="item in itemList">
                         <ion-item ng-click="toggleItemShown(item)" ng-class="{ active : isItemShown(item)}">
                             {{ item.title | decrypt }}
-                            <ion-option-button class="button-calm button-outline">Update</ion-option-button>
-                            <ion-option-button class="button-assertive button-outline">Delete</ion-option-button>
+                            <ion-option-button class="button-dark button-outline icon ion-edit" ui-sref="add_item({ action : 'edit', eid : {{ item.eid }} })"></ion-option-button>
+                            <ion-option-button class="button-dark button-outline icon ion-trash-a" ng-click="deleteEntry({{ item.eid }})"></ion-option-button>
                         </ion-item>
                         <ion-item ng-show="isItemShown(item)" class="accordion-content">
                             {{ item.username | decrypt }}

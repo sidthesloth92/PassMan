@@ -8,16 +8,49 @@
     border-right: 0px !important;
 }
 
-.item.accordion-content {
+/*------------------------------------------------------MAIN ACCORDION STYLING--------------------------------------------*/
+.list .item.accordion-content {
+    line-height: 38px;
     padding-top: 0;
     padding-bottom: 0;
-    -webkit-transition: .09s all linear !important;
-    -moz-transition: .09s all linear !important;
-    -o-transition: .09s all linear !important;
-    transition: .09s all linear !important;
+    transition: 0.09s all linear;
+}
+.list .item.accordion-content.ng-hide {
+    line-height: 0px;
 }
 
-.item.accordion-content.ng-hide {
+/*------------------------------------------------------CUSTOM BOTTOM MENU STYLING--------------------------------------------*/
+
+.custom_bottom_menu_overlay {
+    position: absolute;
+    z-index: 1000;
+    bottom: 0px;
+}
+
+.custom_bottom_menu_overlay_stretch {
+    top: 0;
+}
+
+.custom_bottom_menu_wrapper {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+}
+
+.slide_up_button {
+    display:block;
+}
+
+.custom_bottom_menu {
+    transition: 0.1s all linear;
+    line-height: 100%;
+}
+
+.custom_bottom_menu.ng-hide {
     line-height: 0px;
+}
+
+.custom_bottom_menu li:last-child {
+    border-bottom: 0px;
 }
 
