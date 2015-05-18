@@ -155,4 +155,6 @@ angular.module('PassMan.controllers', [])
             $scope.addItem.username = '';
             $scope.addItem.password = '';
         };
+    }]).controller('ChangePinController', ['$scope', '$rootScope', '$utilityFunctions', function($scope, $rootScope, $utilityFunctions) {
+
     }]);

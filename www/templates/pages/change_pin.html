@@ -1,0 +1,26 @@
+<ion-view view-title="Change PIN">
+    <ion-nav-buttons side="left">
+        <a class="button button-clear ion-chevron-left ion" ng-click="$ionicGoBack($event)"></a>
+    </ion-nav-buttons>
+    <ion-content>
+        <form name="pinChangingForm" ng-submit="pinChangingFormSubmission(pinChangingFormSubmission)"
+              novalidate>
+            <div class="list">
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">Old PIN</span>
+                    <input type="tel" placeholder="Old PIN" ng-model="changePinForm.oldPin" required>
+                </label>
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">New PIN</span>
+                    <input type="tel" placeholder="New PIN" ng-model="changePinForm.newPin" required>
+                </label>
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">Confirm PIN</span>
+                    <input type="tel" placeholder="Confirm PIN" ng-model="changePinForm.confirmPin" required>
+                </label>
+            </div>
+
+            <button type="submit" class="button button-block button-outline">Change PIN</button>
+        </form>
+    </ion-content>
+</ion-view>

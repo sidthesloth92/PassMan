@@ -52,8 +52,11 @@ angular.module('PassMan', ['ionic', 'PassMan.controllers', 'PassMan.services', '
                 url: '/add_item:action:eid',
                 templateUrl: 'templates/pages/add_item.html',
                 controller: 'AddItemController'
-            }
-        );
+            }).state('change_pin', {
+                url : '/change_pin',
+                templateUrl : 'templates/pages/change_pin.html',
+                controller: 'ChangePinController'
+            });
 
         $urlRouterProvider.otherwise('/unlock');
 
