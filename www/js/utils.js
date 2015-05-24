@@ -110,6 +110,22 @@ angular.module('PassMan.utils', [])
                             });
                             return deferred.promise;
                         },
+                        updateMasterPIN : function(newPin) {
+                            var deferred = $q.defer();
+
+                            db.transaction(function(tx) {
+                                tx.executeSql("UPDATE TABLE_MASTER_PASS SET password = ? where id = 1", [newPin], function(tx, result) {
+                                    console.log("Master PIN updated successfully");
+                                    deferred.resolve();
+                                }, function(tx, error) {
+                                    console.log("Error while updating master PIN");
+                                    console.log(error);
+                                    deferred.reject();
+                                })
+                            });
+
+                            return deferred.promise;
+                        },
                         insertEntry: function (title, username, password) {
                             var deferred = $q.defer();
 
@@ -188,9 +204,8 @@ angular.module('PassMan.utils', [])
                             return encryptedText;
                         },
                         decrypt: function (encryptedText, key) {
-                            var decryptedText;
-                            var decrypted = CryptoJS.AES.decrypt(encryptedText, key);
-                            return decrypted.toString(CryptoJS.enc.Utf8);
+                            var decryptedText = CryptoJS.AES.decrypt(encryptedText, key);
+                            return decryptedText.toString(CryptoJS.enc.Utf8);
                         }
                     },
                     COMMON: {}

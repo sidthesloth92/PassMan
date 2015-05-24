@@ -54,3 +54,15 @@
     border-bottom: 0px;
 }
 
+.loading-container .loading {
+    background-color: transparent;
+}
+
+.loading h3 {
+    color: black !important;
+}
+
+.spinner svg {
+    width: 100px;
+    height: 100px;
+}

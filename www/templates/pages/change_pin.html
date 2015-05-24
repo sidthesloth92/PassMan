@@ -8,15 +8,15 @@
             <div class="list">
                 <label class="item item-input item-floating-label">
                     <span class="input-label">Old PIN</span>
-                    <input type="tel" placeholder="Old PIN" ng-model="changePinForm.oldPin" required>
+                    <input type="tel" placeholder="Old PIN" ng-model="changePinForm.oldPin" required ng-change="checkPin(changePinForm.oldPin)">
                 </label>
                 <label class="item item-input item-floating-label">
                     <span class="input-label">New PIN</span>
-                    <input type="tel" placeholder="New PIN" ng-model="changePinForm.newPin" required>
+                    <input type="tel" placeholder="New PIN" ng-model="changePinForm.newPin" ng-disabled="!fieldsEnabled" required>
                 </label>
                 <label class="item item-input item-floating-label">
                     <span class="input-label">Confirm PIN</span>
-                    <input type="tel" placeholder="Confirm PIN" ng-model="changePinForm.confirmPin" required>
+                    <input type="tel" placeholder="Confirm PIN" ng-model="changePinForm.confirmPin" ng-disabled="!fieldsEnabled" required>
                 </label>
             </div>
 

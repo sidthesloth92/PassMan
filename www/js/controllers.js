@@ -25,7 +25,11 @@ angular.module('PassMan.controllers', [])
                         $rootScope.masterPIN = pinValue;
                         $state.go('main_list');
                     }
+                    else {
+                        $rootScope.masterPIN = '';
+                    }
                 }, function (error) {
+                    $rootScope.masterPIN = '';
                     $utilityFunctions.showAlert('Error', 'Sorry some error occurred');
                 });
             }
@@ -77,17 +81,17 @@ angular.module('PassMan.controllers', [])
 
             $utilityFunctions.showConfirm("Confirm Delete", "Are you sure you want to delete the item?").then(function () {
                 MainListFactory.deleteEntry(eid).then(function () {
-                    for (var i = 0; i < $rootScope.itemList.length; i++) {
-                        if ($rootScope.itemList[i].eid == eid) {
-                            $rootScope.itemList.splice(i, 1);
-                            break;
+                        for (var i = 0; i < $rootScope.itemList.length; i++) {
+                            if ($rootScope.itemList[i].eid == eid) {
+                                $rootScope.itemList.splice(i, 1);
+                                break;
+                            }
                         }
-                    }
-                    $utilityFunctions.showAlert("Item Deleted", "Item successfully deleted");
-                },
-                function () {
-                    $utilityFunctions.showAlert("Error", "Error while deleting. Please try again");
-                });
+                        $utilityFunctions.showAlert("Item Deleted", "Item successfully deleted");
+                    },
+                    function () {
+                        $utilityFunctions.showAlert("Error", "Error while deleting. Please try again");
+                    });
             }, function () {
             });
         };
@@ -155,6 +159,60 @@ angular.module('PassMan.controllers', [])
             $scope.addItem.username = '';
             $scope.addItem.password = '';
         };
-    }]).controller('ChangePinController', ['$scope', '$rootScope', '$utilityFunctions', function($scope, $rootScope, $utilityFunctions) {
+    }]).controller('ChangePinController', ['$scope', '$rootScope', '$ionicLoading', '$utilityFunctions', 'UnlockFactory', 'ChangePinFactory', function ($scope, $rootScope, $ionicLoading, $utilityFunctions, UnlockFactory, ChangePinFactory) {
 
+        $scope.changePinForm = {
+            oldPin: '',
+            newPin: '',
+            confirmPin: ''
+        };
+
+        $scope.fieldsEnabled = false;
+
+
+        $scope.checkPin = function (pinValue) {
+            if (pinValue) {
+                console.log(pinValue);
+                UnlockFactory.checkPIN(pinValue).then(function (result) {
+                    if (result) {
+                        $scope.fieldsEnabled = true;
+                    }
+                    else {
+                        $scope.fieldsEnabled = false;
+                    }
+                }, function (error) {
+                    $utilityFunctions.showAlert('Error', 'Sorry some error occurred');
+                });
+            }
+        };
+
+        $scope.pinChangingFormSubmission = function(pinChangingForm) {
+
+            ChangePinFactory.changePinFormSubmit($rootScope.masterPIN, $scope.changePinForm.newPin, $scope.changePinForm.confirmPin).then(function(result){
+                console.log("operation successful");
+                ChangePinFactory.updateMasterPIN($scope.changePinForm.newPin, $scope.changePinForm.newPin).then(function(result) {
+                    $rootScope.masterPIN = $scope.changePinForm.newPin;
+                    $scope.clearPinChangingForm();
+                    $utilityFunctions.showAlert("PIN Updated", "You have successfully updated the master PIN.");
+                }, function(error) {
+                    console.log(error);
+                    console.log("error while updating master pin");
+                });
+
+                $ionicLoading.hide();
+            }, function(error) {
+                console.dir(error);
+            }, function(notifyMessage) {
+                $ionicLoading.show({
+                    template: '<h3>' + notifyMessage + '</h3><ion-spinner icon="ripple"></ion-spinner>',
+                    noBackdrop : true
+                });
+            });
+        }
+
+        $scope.clearPinChangingForm = function() {
+            $scope.changePinForm.oldPin = '';
+            $scope.changePinForm.newPin = '';
+            $scope.changePinForm.confirmPin = '';
+        }
     }]);

@@ -8,7 +8,7 @@ angular.module('PassMan.services', [])
 
                     if (result.length > 0) {
                         var encryptedPIN = result.item(0).password;
-
+                        console.log(encryptedPIN);
                         var decryptedPIN = $utilityFunctions.CRYPT.decrypt(encryptedPIN, pinValue);
                         console.log(decryptedPIN);
 
@@ -33,7 +33,8 @@ angular.module('PassMan.services', [])
                 if (initialPIN === confirmPIN) {
 
                     var encryptedText = $utilityFunctions.CRYPT.encrypt(initialPIN, initialPIN);
-
+                    console.log("while submissoin");
+                    console.log(encryptedText);
                     if (encryptedText) {
                         $utilityFunctions.DB.insertMasterPIN(encryptedText).then(function (result) {
                             $utilityFunctions.localStorage.setItem('isPINSet', true);
@@ -171,6 +172,76 @@ angular.module('PassMan.services', [])
                         deferred.reject();
                     }
                 }, function (error) {
+                    deferred.reject();
+                });
+
+                return deferred.promise;
+            }
+        };
+    }])
+    .factory('ChangePinFactory', ['$utilityFunctions', '$q', function($utilityFunctions, $q) {
+        return {
+            changePinFormSubmit : function(oldPin, newPin, confirmPin) {
+                var deferred = $q.defer();
+
+                if(newPin === confirmPin) {
+                    deferred.notify("Getting Entries");
+                    $utilityFunctions.DB.retrieveEntries().then(function (result) {
+                        console.dir(result.item(0));
+                        itemList = [];
+                        for (var i = 0; i < result.length; i++) {
+                            var newItem = {};
+                            var currentItem = result.item(i);
+
+                            newItem.eid = currentItem.eid;
+
+                            var decryptedTitle = $utilityFunctions.CRYPT.decrypt(currentItem.entry_title, oldPin);
+                            newItem.title = $utilityFunctions.CRYPT.encrypt(decryptedTitle, newPin);
+                            var decryptedUsername = $utilityFunctions.CRYPT.decrypt(currentItem.entry_username, oldPin);
+                            newItem.username = $utilityFunctions.CRYPT.encrypt(decryptedUsername, newPin);
+                            var decryptedPassword = $utilityFunctions.CRYPT.decrypt(currentItem.entry_password, oldPin);
+                            newItem.password = $utilityFunctions.CRYPT.encrypt(decryptedPassword, newPin);
+
+                            itemList.push(newItem);
+                        }
+                        console.log("re-encrypted list");
+                        console.log(itemList);
+
+                        var updates = [];
+                        for(var i = 0 ; i < itemList.length; i++) {
+                            updates.push($utilityFunctions.DB.editEntry(itemList[i].title, itemList[i].username, itemList[i].password, itemList[i].eid));
+                        }
+
+                        $q.all(updates).then(function(result) {
+                            console.log("all rows updated");
+                            deferred.resolve();
+                        }, function(error) {
+                            console.log("error white updating rows");
+                            console.dir(error);
+                            deferred.reject();
+                        });
+
+                    }, function (error) {
+                        console.log("Error retrieving List");
+                        deferred.reject();
+                    });
+                }
+                else {
+                    $utilityFunctions.showAlert('Retry', "The PIN's do not match");
+                    deferred.reject();
+                }
+
+                return deferred.promise;
+            },
+            updateMasterPIN : function(newPIN, key) {
+                var deferred = $q.defer();
+
+
+                var encryptedPIN = $utilityFunctions.CRYPT.encrypt(newPIN, key);
+                $utilityFunctions.DB.updateMasterPIN(encryptedPIN).then(function(result) {
+                    deferred.resolve();
+                }, function(error) {
+                    console.log(error);
                     deferred.reject();
                 });
 
