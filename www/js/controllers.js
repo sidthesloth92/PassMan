@@ -50,7 +50,10 @@ angular.module('PassMan.controllers', [])
         };
     }])
     .controller('MainListController', ['$scope', '$rootScope', 'MainListFactory', '$utilityFunctions', function ($scope, $rootScope, MainListFactory, $utilityFunctions) {
-
+        $scope.searchTerm = {
+            title : ''
+        };
+        
         $scope.$on('$ionicView.beforeEnter', function () {
             $rootScope.itemList = [];
             MainListFactory.loadList($rootScope.masterPIN).then(function (itemList) {

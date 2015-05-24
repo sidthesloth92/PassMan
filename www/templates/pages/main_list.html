@@ -8,7 +8,7 @@
                 <ion-list class="list-inset">
                     <ion-item class="item-input">
                         <i class="icon ion-search placeholder-icon"></i>
-                        <input type="search" placeholder="Search..." />
+                        <input type="search" placeholder="Search..." ng-model="searchTerm.title" />
                     </ion-item>
                 </ion-list>
             </div>
@@ -17,7 +17,7 @@
         <div class="row row-no-padding">
             <div class="col">
                 <ion-list show-delete="false" can-swipe="true">
-                    <div ng-repeat="item in itemList">
+                    <div ng-repeat="item in itemList | customSearchFilter:searchTerm.title">
                         <ion-item ng-click="toggleItemShown(item)" ng-class="{ active : isItemShown(item)}">
                             {{ item.title | decrypt }}
                             <ion-option-button class="button-dark button-outline icon ion-edit" ui-sref="add_item({ action : 'edit', eid : {{ item.eid }} })"></ion-option-button>
