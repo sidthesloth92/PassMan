@@ -179,52 +179,47 @@ angular.module('PassMan.services', [])
             changePinFormSubmit : function(oldPin, newPin, confirmPin) {
                 var deferred = $q.defer();
 
-                if(newPin === confirmPin) {
-                    deferred.notify("Getting Entries");
-                    $utilityFunctions.DB.retrieveEntries().then(function (result) {
-                        console.dir(result.item(0));
-                        itemList = [];
-                        for (var i = 0; i < result.length; i++) {
-                            var newItem = {};
-                            var currentItem = result.item(i);
+                
+                deferred.notify("Getting Entries");
+                $utilityFunctions.DB.retrieveEntries().then(function (result) {
+                    console.dir(result.item(0));
+                    itemList = [];
+                    for (var i = 0; i < result.length; i++) {
+                        var newItem = {};
+                        var currentItem = result.item(i);
 
-                            newItem.eid = currentItem.eid;
+                        newItem.eid = currentItem.eid;
 
-                            var decryptedTitle = $utilityFunctions.CRYPT.decrypt(currentItem.entry_title, oldPin);
-                            newItem.title = $utilityFunctions.CRYPT.encrypt(decryptedTitle, newPin);
-                            var decryptedUsername = $utilityFunctions.CRYPT.decrypt(currentItem.entry_username, oldPin);
-                            newItem.username = $utilityFunctions.CRYPT.encrypt(decryptedUsername, newPin);
-                            var decryptedPassword = $utilityFunctions.CRYPT.decrypt(currentItem.entry_password, oldPin);
-                            newItem.password = $utilityFunctions.CRYPT.encrypt(decryptedPassword, newPin);
+                        var decryptedTitle = $utilityFunctions.CRYPT.decrypt(currentItem.entry_title, oldPin);
+                        newItem.title = $utilityFunctions.CRYPT.encrypt(decryptedTitle, newPin);
+                        var decryptedUsername = $utilityFunctions.CRYPT.decrypt(currentItem.entry_username, oldPin);
+                        newItem.username = $utilityFunctions.CRYPT.encrypt(decryptedUsername, newPin);
+                        var decryptedPassword = $utilityFunctions.CRYPT.decrypt(currentItem.entry_password, oldPin);
+                        newItem.password = $utilityFunctions.CRYPT.encrypt(decryptedPassword, newPin);
 
-                            itemList.push(newItem);
-                        }
-                        console.log("re-encrypted list");
-                        console.log(itemList);
+                        itemList.push(newItem);
+                    }
+                    console.log("re-encrypted list");
+                    console.log(itemList);
 
-                        var updates = [];
-                        for(var i = 0 ; i < itemList.length; i++) {
-                            updates.push($utilityFunctions.DB.editEntry(itemList[i].title, itemList[i].username, itemList[i].password, itemList[i].eid));
-                        }
+                    var updates = [];
+                    for(var i = 0 ; i < itemList.length; i++) {
+                        updates.push($utilityFunctions.DB.editEntry(itemList[i].title, itemList[i].username, itemList[i].password, itemList[i].eid));
+                    }
 
-                        $q.all(updates).then(function(result) {
-                            console.log("all rows updated");
-                            deferred.resolve();
-                        }, function(error) {
-                            console.log("error white updating rows");
-                            console.dir(error);
-                            deferred.reject();
-                        });
-
-                    }, function (error) {
-                        console.log("Error retrieving List");
+                    $q.all(updates).then(function(result) {
+                        console.log("all rows updated");
+                        deferred.resolve();
+                    }, function(error) {
+                        console.log("error white updating rows");
+                        console.dir(error);
                         deferred.reject();
                     });
-                }
-                else {
-                    $utilityFunctions.showAlert('Retry', "The PIN's do not match");
+
+                }, function (error) {
+                    console.log("Error retrieving List");
                     deferred.reject();
-                }
+                });
 
                 return deferred.promise;
             },

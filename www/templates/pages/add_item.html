@@ -4,22 +4,23 @@
         <a class="button button-clear ion-chevron-left ion" ng-click="$ionicGoBack($event)"></a>
     </ion-nav-buttons>
     <ion-content>
-
+        
         <form name="addItemForm" ng-submit="addItemFormSubmit(addItemForm)" novalidate>
             <div class="list">
                 <label class="item item-input item-floating-label">
                     <span class="input-label">Title</span>
-                    <input type="text" placeholder="Title" ng-model="addItem.title" required>
+                    <input type="text" name="title" placeholder="Title" ng-model="addItem.title" required>
                 </label>
                 <label class="item item-input item-floating-label">
                     <span class="input-label">Username</span>
-                    <input type="text" placeholder="Username" ng-model="addItem.username" required>
+                    <input type="text" name="username" placeholder="Username" ng-model="addItem.username" required>
                 </label>
                 <label class="item item-input item-floating-label">
                     <span class="input-label">Password</span>
-                    <input type="text" placeholder="Password" ng-model="addItem.password" required>
+                    <input type="text" name="password" placeholder="Password" ng-model="addItem.password" required>
                 </label>
             </div>
+            <span class="errorMessage" ng-show="(!addItemForm.title.$pristine && addItemForm.title.$invalid) || (!addItemForm.username.$pristine && addItemForm.username.$invalid) || (!addItemForm.password.$pristine && addItemForm.password.$invalid)">All fields are mandatory</span>
             <button type="submit" class="button button-block button-outline button-no-side">
                 <span ng-show="action == 'add'">Add Entry</span>
                 <span ng-show="action == 'edit'">Edit Entry</span>

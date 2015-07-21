@@ -86,9 +86,9 @@ angular.module('PassMan.utils', [])
                         },
                         createTables: function () {
                             db.transaction(function (tx) {
-                              //  tx.executeSql("DROP TABLE IF EXISTS TABLE_MASTER_PASS");
-                              //  tx.executeSql("DROP TABLE IF EXISTS TABLE_ENTRY");
-                              //  console.log("Tables deleted successfully");
+                               // tx.executeSql("DROP TABLE IF EXISTS TABLE_MASTER_PASS");
+                               // tx.executeSql("DROP TABLE IF EXISTS TABLE_ENTRY");
+                               // console.log("Tables deleted successfully");
 
                                 tx.executeSql("CREATE TABLE IF NOT EXISTS TABLE_MASTER_PASS (id integer primary key, password text)");
                                 tx.executeSql("CREATE TABLE IF NOT EXISTS TABLE_ENTRY (eid integer primary key, entry_title text, entry_username text, entry_password text)");

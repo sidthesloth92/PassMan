@@ -41,7 +41,7 @@ angular.module('PassMan.controllers', [])
         $scope.pinSettingFormSubmission = function(form) {
             
              if(form.$valid) {
-                if($scope.pinForm.pin == $scope.pinForm.confirmPin) {
+                if($scope.pinForm.pin === $scope.pinForm.confirmPin) {
                     UnlockFactory.pinSettingFormSubmission($scope.pinForm.pin, $scope.pinForm.confirmPin).then(function(result) {
                         $rootScope.isPINSet = true;
                         $scope.pinForm.pin = "";
@@ -146,7 +146,7 @@ angular.module('PassMan.controllers', [])
             if ($scope.action === "add") {
                 AddItemFactory.addItemFormSubmit($scope.addItem, $rootScope.masterPIN).then(function(result) {
                     $utilityFunctions.showAlert("Entry Added", "Entry Added Successfully");
-                    $scope.resetAddItemForm();
+                    $scope.resetAddItemForm(form);
                 }, function(error) {
                     $utilityFunctions.showAlert("Error", "Some error occurred. Please try again.");
                 });
@@ -160,10 +160,11 @@ angular.module('PassMan.controllers', [])
             }
         };
 
-        $scope.resetAddItemForm = function() {
+        $scope.resetAddItemForm = function(form) {
             $scope.addItem.title = '';
             $scope.addItem.username = '';
             $scope.addItem.password = '';
+            form.$setPristine();
         };
     }]).controller('ChangePinController', ['$scope', '$rootScope', '$ionicLoading', '$utilityFunctions', 'UnlockFactory', 'ChangePinFactory', function($scope, $rootScope, $ionicLoading, $utilityFunctions, UnlockFactory, ChangePinFactory) {
 
@@ -192,27 +193,33 @@ angular.module('PassMan.controllers', [])
         };
 
         $scope.pinChangingFormSubmission = function(pinChangingForm) {
+            if(pinChangingForm.$valid) {
+                if($scope.changePinForm.newPin === $scope.changePinForm.confirmPin) {
+                    console.log('in hrere');
+                        ChangePinFactory.changePinFormSubmit($rootScope.masterPIN, $scope.changePinForm.newPin, $scope.changePinForm.confirmPin).then(function(result) {
+                        console.log("operation successful");
+                        ChangePinFactory.updateMasterPIN($scope.changePinForm.newPin, $scope.changePinForm.newPin).then(function(result) {
+                            $rootScope.masterPIN = $scope.changePinForm.newPin;
+                            $scope.clearPinChangingForm();
 
-            ChangePinFactory.changePinFormSubmit($rootScope.masterPIN, $scope.changePinForm.newPin, $scope.changePinForm.confirmPin).then(function(result) {
-                console.log("operation successful");
-                ChangePinFactory.updateMasterPIN($scope.changePinForm.newPin, $scope.changePinForm.newPin).then(function(result) {
-                    $rootScope.masterPIN = $scope.changePinForm.newPin;
-                    $scope.clearPinChangingForm();
-                    $utilityFunctions.showAlert("PIN Updated", "You have successfully updated the master PIN.");
-                }, function(error) {
-                    console.log(error);
-                    console.log("error while updating master pin");
-                });
+                            pinChangingForm.$setPristine();
+                            $utilityFunctions.showAlert("PIN Updated", "You have successfully updated the master PIN.");
+                        }, function(error) {
+                            console.log(error);
+                            console.log("error while updating master pin");
+                        });
 
-                $ionicLoading.hide();
-            }, function(error) {
-                console.dir(error);
-            }, function(notifyMessage) {
-                $ionicLoading.show({
-                    template: '<h3>' + notifyMessage + '</h3><ion-spinner icon="ripple"></ion-spinner>',
-                    noBackdrop: true
-                });
-            });
+                        $ionicLoading.hide();
+                    }, function(error) {
+                        console.dir(error);
+                    }, function(notifyMessage) {
+                        $ionicLoading.show({
+                            template: '<h3>' + notifyMessage + '</h3><ion-spinner icon="ripple"></ion-spinner>',
+                            noBackdrop: true
+                        });
+                    });
+                }
+            }
         }
 
         $scope.clearPinChangingForm = function() {
