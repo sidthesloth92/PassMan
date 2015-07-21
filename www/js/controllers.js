@@ -1,6 +1,6 @@
 angular.module('PassMan.controllers', [])
     .controller('UnlockController', ['$scope', '$utilityFunctions', '$state', '$rootScope', 'UnlockFactory', function($scope, $utilityFunctions, $state, $rootScope, UnlockFactory) {
-        $scope.isPINSet = false;
+        $rootScope.isPINSet = false;
         $scope.pinForm = {
             pin: '',
             confirmPin: ''
@@ -13,9 +13,9 @@ angular.module('PassMan.controllers', [])
             var isPINSet = $utilityFunctions.localStorage.getItem('isPINSet');
 
             if (isPINSet === "false") {
-                $scope.isPINSet = false;
+                $rootScope.isPINSet = false;
             } else {
-                $scope.isPINSet = true;
+                $rootScope.isPINSet = true;
             }
 
             $scope.loginForm.loginPIN = '';
@@ -41,11 +41,11 @@ angular.module('PassMan.controllers', [])
         $scope.pinSettingFormSubmission = function(form) {
 
             UnlockFactory.pinSettingFormSubmission($scope.pinForm.pin, $scope.pinForm.confirmPin).then(function(result) {
-                $scope.isPINSet = true;
+                $rootScope.isPINSet = true;
                 $scope.pinForm.pin = "";
                 $scope.pinForm.confirmPin = "";
             }, function(error) {
-                $scope.isPINSet = false;
+                $rootScope.isPINSet = false;
                 $scope.pinForm.pin = "";
                 $scope.pinForm.confirmPin = "";
             });

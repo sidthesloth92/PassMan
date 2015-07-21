@@ -11,7 +11,7 @@ angular.module('PassMan.filters', [])
             for(var i = 0; i < entries.length; i++) {
                 var decryptedTitle =  $utilityFunctions.CRYPT.decrypt(entries[i].title, $rootScope.masterPIN);
                 console.log(decryptedTitle);
-                if(decryptedTitle.indexOf(searchTerm) != -1) {
+                if(decryptedTitle.toLowerCase().indexOf(searchTerm.toLowerCase()) != -1) {
                     returnArray.push(entries[i]);
                 }
             }
