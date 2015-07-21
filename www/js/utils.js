@@ -12,8 +12,20 @@ angular.module('PassMan.utils', [])
                     console.log(dbName);
                 }
             },
-            $get: ['$ionicPopup', '$q', function ($ionicPopup, $q) {
+            $get: ['$ionicPopup', '$q', '$ionicHistory', '$rootScope', '$state', function ($ionicPopup, $q, $ionicHistory, $rootScope, $state) {
                 return {
+                    deviceReady : function() {
+                        alert('deviceREady');
+                        document.addEventListener("pause", function() {
+                            console.log("paused");
+                            $ionicHistory.clearHistory();
+                            $rootScope.masterPIN = '';
+                        }, false);
+                        document.addEventListener("resume", function() {
+                            console.log("resumed");
+                            $state.go('unlock');
+                        }, false);
+                    },
                     localStorage: {
                         setItem: function (key, value) {
                             window.localStorage.setItem(key, value);
@@ -74,9 +86,9 @@ angular.module('PassMan.utils', [])
                         },
                         createTables: function () {
                             db.transaction(function (tx) {
-                                //tx.executeSql("DROP TABLE IF EXISTS TABLE_MASTER_PASS");
-                                //tx.executeSql("DROP TABLE IF EXISTS TABLE_ENTRY");
-                                //console.log("Tables deleted successfully");
+                              //  tx.executeSql("DROP TABLE IF EXISTS TABLE_MASTER_PASS");
+                              //  tx.executeSql("DROP TABLE IF EXISTS TABLE_ENTRY");
+                              //  console.log("Tables deleted successfully");
 
                                 tx.executeSql("CREATE TABLE IF NOT EXISTS TABLE_MASTER_PASS (id integer primary key, password text)");
                                 tx.executeSql("CREATE TABLE IF NOT EXISTS TABLE_ENTRY (eid integer primary key, entry_title text, entry_username text, entry_password text)");
@@ -198,15 +210,31 @@ angular.module('PassMan.utils', [])
                         }
                     },
                     CRYPT: {
+                        // encrypt: function (plainText, key) {
+                        //     var encryptedText;
+                        //     encryptedText = CryptoJS.AES.encrypt(plainText, key);
+                        //     return encryptedText;
+                        // },
+                        // decrypt: function (encryptedText, key) {
+                        //   var decryptedText = CryptoJS.AES.decrypt(encryptedText, key);
+                        //     //var decryptedText = CryptoJS.AES.decrypt(encryptedText, CryptoJS.enc.Base64.parse(key), { iv: CryptoJS.enc.Hex.parse('00000000000000000000000000000000') });
+                        //     return decryptedText.toString(CryptoJS.enc.Utf8);
+                        // }
+
                         encrypt: function (plainText, key) {
                             var encryptedText;
+                            console.log("%c%s", "background: red; color: white", "Encryption Key: " + key);
                             encryptedText = CryptoJS.AES.encrypt(plainText, key);
-                            return encryptedText;
+                            return encryptedText.toString();
                         },
                         decrypt: function (encryptedText, key) {
-                            var decryptedText = CryptoJS.AES.decrypt(encryptedText, key);
-                            return decryptedText.toString(CryptoJS.enc.Utf8);
+                          //var base64Key  = CryptoJS.enc.Utf8.parse(key);
+                          var decryptedText = CryptoJS.AES.decrypt(encryptedText, key);
+                          console.log("%c%s", "background: red; color: white", "Decryption Key: " + key);
+                          //var decryptedText = CryptoJS.AES.decrypt(encryptedText, CryptoJS.enc.Base64.parse(key), { iv: CryptoJS.enc.Hex.parse('00000000000000000000000000000000') });
+                          return decryptedText.toString(CryptoJS.enc.Utf8);
                         }
+
                     },
                     COMMON: {}
                 };

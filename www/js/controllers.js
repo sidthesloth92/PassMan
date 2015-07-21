@@ -1,47 +1,50 @@
 angular.module('PassMan.controllers', [])
-    .controller('UnlockController', ['$scope', '$utilityFunctions', '$state', '$rootScope', 'UnlockFactory', function ($scope, $utilityFunctions, $state, $rootScope, UnlockFactory) {
+    .controller('UnlockController', ['$scope', '$utilityFunctions', '$state', '$rootScope', 'UnlockFactory', function($scope, $utilityFunctions, $state, $rootScope, UnlockFactory) {
         $scope.isPINSet = false;
         $scope.pinForm = {
             pin: '',
             confirmPin: ''
         };
-        $scope.loginPIN = "";
+        $scope.loginForm = {
+            loginPIN: ''
+        };
 
-        $scope.$on('$ionicView.beforeEnter', function () {
+        $scope.$on('$ionicView.beforeEnter', function() {
             var isPINSet = $utilityFunctions.localStorage.getItem('isPINSet');
 
             if (isPINSet === "false") {
                 $scope.isPINSet = false;
-            }
-            else {
+            } else {
                 $scope.isPINSet = true;
             }
+
+            $scope.loginForm.loginPIN = '';
+            console.dir($scope);
         });
 
-        $scope.checkPin = function (pinValue) {
+        $scope.checkPin = function(pinValue) {
             if (pinValue && pinValue.length == 4) {
-                UnlockFactory.checkPIN(pinValue).then(function (result) {
+                UnlockFactory.checkPIN(pinValue).then(function(result) {
                     if (result) {
                         $rootScope.masterPIN = pinValue;
                         $state.go('main_list');
-                    }
-                    else {
+                    } else {
                         $rootScope.masterPIN = '';
                     }
-                }, function (error) {
+                }, function(error) {
                     $rootScope.masterPIN = '';
                     $utilityFunctions.showAlert('Error', 'Sorry some error occurred');
                 });
             }
         };
 
-        $scope.pinSettingFormSubmission = function (form) {
+        $scope.pinSettingFormSubmission = function(form) {
 
-            UnlockFactory.pinSettingFormSubmission($scope.pinForm.pin, $scope.pinForm.confirmPin).then(function (result) {
+            UnlockFactory.pinSettingFormSubmission($scope.pinForm.pin, $scope.pinForm.confirmPin).then(function(result) {
                 $scope.isPINSet = true;
                 $scope.pinForm.pin = "";
                 $scope.pinForm.confirmPin = "";
-            }, function (error) {
+            }, function(error) {
                 $scope.isPINSet = false;
                 $scope.pinForm.pin = "";
                 $scope.pinForm.confirmPin = "";
@@ -49,41 +52,40 @@ angular.module('PassMan.controllers', [])
 
         };
     }])
-    .controller('MainListController', ['$scope', '$rootScope', 'MainListFactory', '$utilityFunctions', function ($scope, $rootScope, MainListFactory, $utilityFunctions) {
+    .controller('MainListController', ['$scope', '$rootScope', 'MainListFactory', '$utilityFunctions', function($scope, $rootScope, MainListFactory, $utilityFunctions) {
         $scope.searchTerm = {
-            title : ''
+            title: ''
         };
-        
-        $scope.$on('$ionicView.beforeEnter', function () {
+
+        $scope.$on('$ionicView.beforeEnter', function() {
             $rootScope.itemList = [];
-            MainListFactory.loadList($rootScope.masterPIN).then(function (itemList) {
+            MainListFactory.loadList($rootScope.masterPIN).then(function(itemList) {
                 $rootScope.itemList = itemList;
                 console.log($rootScope.itemList);
             });
 
         });
 
-        $scope.$on('$ionicView.beforeLeave', function () {
+        $scope.$on('$ionicView.beforeLeave', function() {
             console.log("exited");
         });
 
-        $scope.toggleItemShown = function (item) {
+        $scope.toggleItemShown = function(item) {
             if ($scope.isItemShown(item)) {
                 $scope.itemShown = null;
-            }
-            else {
+            } else {
                 $scope.itemShown = item;
             }
         };
 
-        $scope.isItemShown = function (item) {
+        $scope.isItemShown = function(item) {
             return $scope.itemShown === item;
         };
 
-        $scope.deleteEntry = function (eid) {
+        $scope.deleteEntry = function(eid) {
 
-            $utilityFunctions.showConfirm("Confirm Delete", "Are you sure you want to delete the item?").then(function () {
-                MainListFactory.deleteEntry(eid).then(function () {
+            $utilityFunctions.showConfirm("Confirm Delete", "Are you sure you want to delete the item?").then(function() {
+                MainListFactory.deleteEntry(eid).then(function() {
                         for (var i = 0; i < $rootScope.itemList.length; i++) {
                             if ($rootScope.itemList[i].eid == eid) {
                                 $rootScope.itemList.splice(i, 1);
@@ -92,15 +94,14 @@ angular.module('PassMan.controllers', [])
                         }
                         $utilityFunctions.showAlert("Item Deleted", "Item successfully deleted");
                     },
-                    function () {
+                    function() {
                         $utilityFunctions.showAlert("Error", "Error while deleting. Please try again");
                     });
-            }, function () {
-            });
+            }, function() {});
         };
 
     }])
-    .controller('AddItemController', ['$scope', '$rootScope', '$stateParams', '$state', 'AddItemFactory', '$utilityFunctions', function ($scope, $rootScope, $stateParams, $state, AddItemFactory, $utilityFunctions) {
+    .controller('AddItemController', ['$scope', '$rootScope', '$stateParams', '$state', 'AddItemFactory', '$utilityFunctions', function($scope, $rootScope, $stateParams, $state, AddItemFactory, $utilityFunctions) {
 
         $scope.addItem = {
             eid: '',
@@ -111,21 +112,21 @@ angular.module('PassMan.controllers', [])
 
         $scope.action = "";
 
-        $scope.$on('$ionicView.beforeEnter', function () {
+        $scope.$on('$ionicView.beforeEnter', function() {
             console.dir($stateParams);
             var action = $stateParams.action;
 
             if (action === "edit") {
                 //get entry from db and set the item
 
-                AddItemFactory.retrieveEntry($stateParams.eid, $rootScope.masterPIN).then(function (result) {
+                AddItemFactory.retrieveEntry($stateParams.eid, $rootScope.masterPIN).then(function(result) {
                     console.log(" item retrieved successfully");
                     console.dir(result);
                     $scope.addItem.eid = result.eid;
                     $scope.addItem.title = result.title;
                     $scope.addItem.username = result.username;
                     $scope.addItem.password = result.password;
-                }, function (error) {
+                }, function(error) {
                     $utilityFunctions.showAlert("Error", "Entry retrieval failed");
                     console.dir($state);
                 });
@@ -135,34 +136,33 @@ angular.module('PassMan.controllers', [])
         });
 
 
-        $scope.addItemFormSubmit = function (form) {
+        $scope.addItemFormSubmit = function(form) {
             console.dir(form);
             console.log($scope.action + " " + $scope.addItem.eid.length);
             console.dir($scope.addItem);
             if ($scope.action === "add") {
-                AddItemFactory.addItemFormSubmit($scope.addItem, $rootScope.masterPIN).then(function (result) {
+                AddItemFactory.addItemFormSubmit($scope.addItem, $rootScope.masterPIN).then(function(result) {
                     $utilityFunctions.showAlert("Entry Added", "Entry Added Successfully");
                     $scope.resetAddItemForm();
-                }, function (error) {
+                }, function(error) {
                     $utilityFunctions.showAlert("Error", "Some error occurred. Please try again.");
                 });
-            }
-            else if ($scope.action === "edit" && $scope.addItem.eid) {
+            } else if ($scope.action === "edit" && $scope.addItem.eid) {
 
-                AddItemFactory.editItemFormSubmit($scope.addItem, $rootScope.masterPIN, $scope.addItem.eid).then(function (result) {
+                AddItemFactory.editItemFormSubmit($scope.addItem, $rootScope.masterPIN, $scope.addItem.eid).then(function(result) {
                     $utilityFunctions.showAlert("Entry Edited", "Entry Edit Success");
-                }, function (error) {
+                }, function(error) {
                     $utilityFunctions.showAlert("Error", "Some error occurred. Please try again.");
                 });
             }
         };
 
-        $scope.resetAddItemForm = function () {
+        $scope.resetAddItemForm = function() {
             $scope.addItem.title = '';
             $scope.addItem.username = '';
             $scope.addItem.password = '';
         };
-    }]).controller('ChangePinController', ['$scope', '$rootScope', '$ionicLoading', '$utilityFunctions', 'UnlockFactory', 'ChangePinFactory', function ($scope, $rootScope, $ionicLoading, $utilityFunctions, UnlockFactory, ChangePinFactory) {
+    }]).controller('ChangePinController', ['$scope', '$rootScope', '$ionicLoading', '$utilityFunctions', 'UnlockFactory', 'ChangePinFactory', function($scope, $rootScope, $ionicLoading, $utilityFunctions, UnlockFactory, ChangePinFactory) {
 
         $scope.changePinForm = {
             oldPin: '',
@@ -173,17 +173,16 @@ angular.module('PassMan.controllers', [])
         $scope.fieldsEnabled = false;
 
 
-        $scope.checkPin = function (pinValue) {
+        $scope.checkPin = function(pinValue) {
             if (pinValue) {
                 console.log(pinValue);
-                UnlockFactory.checkPIN(pinValue).then(function (result) {
+                UnlockFactory.checkPIN(pinValue).then(function(result) {
                     if (result) {
                         $scope.fieldsEnabled = true;
-                    }
-                    else {
+                    } else {
                         $scope.fieldsEnabled = false;
                     }
-                }, function (error) {
+                }, function(error) {
                     $utilityFunctions.showAlert('Error', 'Sorry some error occurred');
                 });
             }
@@ -191,7 +190,7 @@ angular.module('PassMan.controllers', [])
 
         $scope.pinChangingFormSubmission = function(pinChangingForm) {
 
-            ChangePinFactory.changePinFormSubmit($rootScope.masterPIN, $scope.changePinForm.newPin, $scope.changePinForm.confirmPin).then(function(result){
+            ChangePinFactory.changePinFormSubmit($rootScope.masterPIN, $scope.changePinForm.newPin, $scope.changePinForm.confirmPin).then(function(result) {
                 console.log("operation successful");
                 ChangePinFactory.updateMasterPIN($scope.changePinForm.newPin, $scope.changePinForm.newPin).then(function(result) {
                     $rootScope.masterPIN = $scope.changePinForm.newPin;
@@ -208,7 +207,7 @@ angular.module('PassMan.controllers', [])
             }, function(notifyMessage) {
                 $ionicLoading.show({
                     template: '<h3>' + notifyMessage + '</h3><ion-spinner icon="ripple"></ion-spinner>',
-                    noBackdrop : true
+                    noBackdrop: true
                 });
             });
         }

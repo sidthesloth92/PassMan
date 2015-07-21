@@ -35,6 +35,25 @@ angular.module('PassMan', ['ionic', 'PassMan.controllers', 'PassMan.services', '
 
         $rootScope.masterPIN = '';
         $rootScope.itemList = [];
+
+        console.dir(document);
+        document.addEventListener("deviceready", $utilityFunctions.deviceReady, false);
+
+
+        // device APIs are available
+        //
+        function onDeviceReady() {
+            document.addEventListener("pause", onPause, false);
+        }
+
+        // Handle the pause event
+        //
+        function onPause() {
+            console.log('apsu');
+        }
+
+
+
     }])
     .config(['$stateProvider', '$urlRouterProvider', '$utilityFunctionsProvider', function ($stateProvider, $urlRouterProvider, $utilityFunctionsProvider) {
         console.log("config start");

@@ -23,9 +23,15 @@
                             <ion-option-button class="button-dark button-outline icon ion-edit" ui-sref="add_item({ action : 'edit', eid : {{ item.eid }} })"></ion-option-button>
                             <ion-option-button class="button-dark button-outline icon ion-trash-a" ng-click="deleteEntry({{ item.eid }})"></ion-option-button>
                         </ion-item>
-                        <ion-item ng-show="isItemShown(item)" class="accordion-content">
-                            {{ item.username | decrypt }}
-                            {{ item.password | decrypt }}
+                        <ion-item ng-show="isItemShown(item)" class="accordion-content user_entry">
+                            <div class="user_entry_username">
+                               <i class="icon ion-person"></i> 
+                                <span>{{ item.username | decrypt }}</span>
+                            </div>
+                            <div class="user_entry_password">
+                                <i class="icon ion-key"></i>
+                                <span>{{ item.password | decrypt }}</span>
+                            </div>
                         </ion-item>
                     </div>
                 </ion-list>
