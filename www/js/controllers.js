@@ -39,17 +39,20 @@ angular.module('PassMan.controllers', [])
         };
 
         $scope.pinSettingFormSubmission = function(form) {
-
-            UnlockFactory.pinSettingFormSubmission($scope.pinForm.pin, $scope.pinForm.confirmPin).then(function(result) {
-                $rootScope.isPINSet = true;
-                $scope.pinForm.pin = "";
-                $scope.pinForm.confirmPin = "";
-            }, function(error) {
-                $rootScope.isPINSet = false;
-                $scope.pinForm.pin = "";
-                $scope.pinForm.confirmPin = "";
-            });
-
+            
+             if(form.$valid) {
+                if($scope.pinForm.pin == $scope.pinForm.confirmPin) {
+                    UnlockFactory.pinSettingFormSubmission($scope.pinForm.pin, $scope.pinForm.confirmPin).then(function(result) {
+                        $rootScope.isPINSet = true;
+                        $scope.pinForm.pin = "";
+                        $scope.pinForm.confirmPin = "";
+                    }, function(error) {
+                        $rootScope.isPINSet = false;
+                        $scope.pinForm.pin = "";
+                        $scope.pinForm.confirmPin = "";
+                    });
+                }
+            }
         };
     }])
     .controller('MainListController', ['$scope', '$rootScope', 'MainListFactory', '$utilityFunctions', function($scope, $rootScope, MainListFactory, $utilityFunctions) {

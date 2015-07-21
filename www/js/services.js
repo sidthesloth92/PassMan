@@ -30,31 +30,26 @@ angular.module('PassMan.services', [])
             },
             pinSettingFormSubmission: function (initialPIN, confirmPIN) {
                 var deferred = $q.defer();
-                if (initialPIN === confirmPIN) {
-
-                    var encryptedText = $utilityFunctions.CRYPT.encrypt(initialPIN, initialPIN);
-                    console.log("while submissoin");
-                    console.log(encryptedText);
-                    if (encryptedText) {
-                        $utilityFunctions.DB.insertMasterPIN(encryptedText).then(function (result) {
-                            $utilityFunctions.localStorage.setItem('isPINSet', true);
-                            //$utilityFunctions.localStorage.setItem('masterPIN', Sha256.hash(initialPIN));
-                            $utilityFunctions.showAlert('Success', "You have set the Master Pin. Use it to login.");
-                            deferred.resolve();
-                        }, function (result) {
-                            $utilityFunctions.showAlert('Failed', "Some error has occurred. Please try again.");
-                            deferred.reject();
-                        });
-                    }
-                    else {
+                
+                var encryptedText = $utilityFunctions.CRYPT.encrypt(initialPIN, initialPIN);
+                console.log("while submissoin");
+                console.log(encryptedText);
+                if (encryptedText) {
+                    $utilityFunctions.DB.insertMasterPIN(encryptedText).then(function (result) {
+                        $utilityFunctions.localStorage.setItem('isPINSet', true);
+                        //$utilityFunctions.localStorage.setItem('masterPIN', Sha256.hash(initialPIN));
+                        $utilityFunctions.showAlert('Success', "You have set the Master Pin. Use it to login.");
+                        deferred.resolve();
+                    }, function (result) {
                         $utilityFunctions.showAlert('Failed', "Some error has occurred. Please try again.");
                         deferred.reject();
-                    }
+                    });
                 }
                 else {
-                    $utilityFunctions.showAlert('Retry', "The PIN's do not match");
+                    $utilityFunctions.showAlert('Failed', "Some error has occurred. Please try again.");
                     deferred.reject();
                 }
+
                 return deferred.promise;
             }
         };
