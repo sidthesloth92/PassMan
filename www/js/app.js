@@ -55,7 +55,7 @@ angular.module('PassMan', ['ionic', 'PassMan.controllers', 'PassMan.services', '
 
 
     }])
-    .config(['$stateProvider', '$urlRouterProvider', '$utilityFunctionsProvider', function ($stateProvider, $urlRouterProvider, $utilityFunctionsProvider) {
+    .config(['$stateProvider', '$urlRouterProvider', '$utilityFunctionsProvider', '$logProvider', function ($stateProvider, $urlRouterProvider, $utilityFunctionsProvider, $logProvider) {
         console.log("config start");
         $stateProvider
             .state('unlock', {
@@ -76,10 +76,12 @@ angular.module('PassMan', ['ionic', 'PassMan.controllers', 'PassMan.services', '
                 templateUrl : 'templates/pages/change_pin.html',
                 controller: 'ChangePinController'
             });
-
         $urlRouterProvider.otherwise('/unlock');
 
+        $logProvider.debugEnabled(true);
 
         $utilityFunctionsProvider.DB.config('PassMan.db');
-        console.log("config end");
+        
+
+
     }]);
