@@ -1,4 +1,4 @@
-angular.module('PassMan.directives', []).directive('bottomMenu', ['$state', function ($state) {
+angular.module('PassMan.directives', []).directive('bottomMenu', ['$state', '$log', function ($state, $log) {
     return {
         restrict: 'E',
         templateUrl: 'templates/directives/bottom_menu.html',
@@ -14,13 +14,22 @@ angular.module('PassMan.directives', []).directive('bottomMenu', ['$state', func
             scope.isShown = false;
 
             scope.toggleShow = function () {
+                $log.debug('directives.bottomMenu.toggleShow: start');
+                
                 scope.isShown = !scope.isShown;
-                document.getElementsByClassName('custom_bottom_menu_overlay')[0].classList.toggle('custom_bottom_menu_overlay_stretch');
+                document.querySelector('.custom_bottom_menu_overlay').classList.toggle('custom_bottom_menu_overlay_stretch');
+            
+                $log.debug('directives.bottomMenu.toggleShow: end');
             };
 
             scope.handleMenuItemSelect = function (index) {
+                $log.debug('directives.bottomMenu.handleMenuItemSelect: start');
+
+                $log.debug('directives.bottomMenu.handleMenuItemSelect: Index: ' + index);
                 scope.toggleShow();
                 scope.menuItems[index].click();
+                
+                $log.debug('directives.bottomMenu.handleMenuItemSelect: end');
             };
         }
     };

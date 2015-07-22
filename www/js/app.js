@@ -5,9 +5,9 @@
 // the 2nd parameter is an array of 'requires'
 angular.module('PassMan', ['ionic', 'PassMan.controllers', 'PassMan.services', 'PassMan.filters', 'PassMan.directives', 'PassMan.utils'])
 
-    .run(['$ionicPlatform', '$utilityFunctions', '$rootScope', function ($ionicPlatform, $utilityFunctions, $rootScope) {
+    .run(['$ionicPlatform', '$utilityFunctions', '$rootScope', '$log', function ($ionicPlatform, $utilityFunctions, $rootScope, $log) {
         $ionicPlatform.ready(function () {
-            console.log('run start');
+            $log.debug('run start');
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
             if (window.cordova && window.cordova.plugins.Keyboard) {
@@ -17,43 +17,33 @@ angular.module('PassMan', ['ionic', 'PassMan.controllers', 'PassMan.services', '
                 StatusBar.styleDefault();
             }
 
-            console.log('run end');
+            $log.debug('run end');
         });
 
         //creating the database
         $utilityFunctions.DB.create();
         $utilityFunctions.DB.createTables();
 
-
         //setting the initial PIN set value to false
         var isPINSet = $utilityFunctions.localStorage.getItem('isPINSet');
 
         if (isPINSet === null) {
-            console.log("PIN not set. Setting to false");
+            $log.debug("PIN not set. Setting to false");
             $utilityFunctions.localStorage.setItem('isPINSet', false);
         }
 
         $rootScope.masterPIN = '';
         $rootScope.itemList = [];
 
-        console.dir(document);
         document.addEventListener("deviceready", $utilityFunctions.deviceReady, false);
 
-
-        // device APIs are available
-        //
         function onDeviceReady() {
             document.addEventListener("pause", onPause, false);
         }
 
-        // Handle the pause event
-        //
         function onPause() {
             console.log('apsu');
         }
-
-
-
     }])
     .config(['$stateProvider', '$urlRouterProvider', '$utilityFunctionsProvider', '$logProvider', function ($stateProvider, $urlRouterProvider, $utilityFunctionsProvider, $logProvider) {
         console.log("config start");
@@ -82,6 +72,4 @@ angular.module('PassMan', ['ionic', 'PassMan.controllers', 'PassMan.services', '
 
         $utilityFunctionsProvider.DB.config('PassMan.db');
         
-
-
     }]);

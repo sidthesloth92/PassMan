@@ -1,67 +1,72 @@
 angular.module('PassMan.services', [])
-    .factory('UnlockFactory', ['$utilityFunctions', '$q', function ($utilityFunctions, $q) {
+    .factory('UnlockFactory', ['$utilityFunctions', '$q', '$log', function ($utilityFunctions, $q, $log) {
         return {
 
             checkPIN: function (pinValue) {
+                $log.debug('UnlockFactory.checkPIN: start');
+
                 var deferred = $q.defer();
                 $utilityFunctions.DB.retrieveMasterPIN().then(function (result) {
 
                     if (result.length > 0) {
                         var encryptedPIN = result.item(0).password;
-                        console.log(encryptedPIN);
                         var decryptedPIN = $utilityFunctions.CRYPT.decrypt(encryptedPIN, pinValue);
-                        console.log(decryptedPIN);
-
+                        
                         if (pinValue === decryptedPIN) {
-                            console.log("Master PIN matches");
+                            $log.debug('UnlockFactory.checkPIN: Master PIN Matches');
                             deferred.resolve(true);
                         }
                         else {
+                            $log.debug('UnlockFactory.checkPIN: Master PIN did not match');
                             deferred.resolve(false);
                         }
                     }
                 }, function (error) {
-
-                    console.log("Error retrieving PIN");
+                    $log.error('UnlockFactory.checkPIN: Error retrieving PIN: ' + error);
                     deferred.reject();
                 });
 
+                $log.debug('UnlockFactory.checkPIN: end');
                 return deferred.promise;
             },
             pinSettingFormSubmission: function (initialPIN, confirmPIN) {
+                $log.debug('UnlockFactory.pinSettingFormSubmission: start');
+
                 var deferred = $q.defer();
                 
                 var encryptedText = $utilityFunctions.CRYPT.encrypt(initialPIN, initialPIN);
-                console.log("while submissoin");
-                console.log(encryptedText);
+            
                 if (encryptedText) {
                     $utilityFunctions.DB.insertMasterPIN(encryptedText).then(function (result) {
                         $utilityFunctions.localStorage.setItem('isPINSet', true);
-                        //$utilityFunctions.localStorage.setItem('masterPIN', Sha256.hash(initialPIN));
                         $utilityFunctions.showAlert('Success', "You have set the Master Pin. Use it to login.");
                         deferred.resolve();
                     }, function (result) {
+                        $log.error('UnlockFactory.pinSettingFormSubmission: error');
                         $utilityFunctions.showAlert('Failed', "Some error has occurred. Please try again.");
                         deferred.reject();
                     });
                 }
                 else {
+                    $log.error('UnlockFactory.pinSettingFormSubmission: error');
                     $utilityFunctions.showAlert('Failed', "Some error has occurred. Please try again.");
                     deferred.reject();
                 }
 
+                $log.debug('UnlockFactory.pinSettingFormSubmission: end');
                 return deferred.promise;
             }
         };
     }])
-    .factory('MainListFactory', ['$utilityFunctions', '$q', function ($utilityFunctions, $q) {
+    .factory('MainListFactory', ['$utilityFunctions', '$q', '$log', function ($utilityFunctions, $q, $log) {
         return {
             loadList: function (key) {
+                $log.debug('MainListFactory.loadList: start');
                 var deferred = $q.defer();
                 var itemList = [];
 
                 $utilityFunctions.DB.retrieveEntries().then(function (result) {
-
+                    $log.debug('MainListFactory.loadList: list retrieved from DB successfully');
                     for (var i = 0; i < result.length; i++) {
                         var newItem = {};
                         var currentItem = result.item(i);
@@ -77,28 +82,32 @@ angular.module('PassMan.services', [])
 
                     deferred.resolve(itemList);
                 }, function (error) {
-                    console.log("Error retrieving List");
+                    $log.error('MainListFactory.loadList: Error retrieving list: ' + error);
                     deferred.resolve(itemList);
                 });
-
+                $log.debug('MainListFactory.loadList: end');
                 return deferred.promise;
             },
             deleteEntry : function(eid) {
+                $log.debug('MainListFactory.deleteEntry: start');
                 var deferred = $q.defer();
 
                 $utilityFunctions.DB.deleteEntry(eid).then(function() {
+                    $log.debug('MainListFactory.loadList: deleted successfully');
                     deferred.resolve();
                 }, function() {
+                    $log.error('MainListFactory.loadList: delete failed');
                     deferred.reject();
                 });
-
+                $log.debug('MainListFactory.deleteEntry: end');
                 return deferred.promise;
             }
         };
     }])
-    .factory('AddItemFactory', ['$utilityFunctions', '$q', function ($utilityFunctions, $q) {
+    .factory('AddItemFactory', ['$utilityFunctions', '$q', '$log', function ($utilityFunctions, $q, $log) {
         return {
             addItemFormSubmit: function (item, key) {
+                $log.debug('AddItemFactory.addItemFormSubmit: start');
                 var deferred = $q.defer();
 
                 var encryptedTitle = $utilityFunctions.CRYPT.encrypt(item.title, key);
@@ -106,14 +115,17 @@ angular.module('PassMan.services', [])
                 var encryptedPassword = $utilityFunctions.CRYPT.encrypt(item.password, key);
 
                 $utilityFunctions.DB.insertEntry(encryptedTitle, encryptedUsername, encryptedPassword).then(function (result) {
+                    $log.debug('AddItemFactory.addItemFormSubmit: Item successfully inserted into DB');
                     deferred.resolve();
                 }, function (error) {
+                    $log.error('AddItemFactory.addItemFormSubmit: Error: ' + error);
                     deferred.reject();
                 });
-
+                $log.debug('AddItemFactory.addItemFormSubmit: end');
                 return deferred.promise;
             },
             editItemFormSubmit : function(item, key, eid) {
+                $log.debug('AddItemFactory.editItemFormSubmit: start');
                 var deferred = $q.defer();
 
                 var encryptedTitle = $utilityFunctions.CRYPT.encrypt(item.title, key);
@@ -121,14 +133,17 @@ angular.module('PassMan.services', [])
                 var encryptedPassword = $utilityFunctions.CRYPT.encrypt(item.password, key);
 
                 $utilityFunctions.DB.editEntry(encryptedTitle, encryptedUsername, encryptedPassword, eid).then(function (result) {
+                    $log.debug('AddItemFactory.editItemFormSubmit: Item updated successfully in the DB');
                     deferred.resolve();
                 }, function (error) {
+                    $log.error('AddItemFactory.editItemFormSubmit: Error: ' + error);
                     deferred.reject();
                 });
-
+                $log.debug('AddItemFactory.editItemFormSubmit: end');
                 return deferred.promise;
             },
             retrieveEntry : function(eid, key) {
+                $log.debug('AddItemFactory.retrieveEntry: start');
                 var deferred = $q.defer();
 
                 $utilityFunctions.DB.retrieveEntry(eid).then(function(result) {
@@ -139,18 +154,22 @@ angular.module('PassMan.services', [])
                         item.title = $utilityFunctions.CRYPT.decrypt(returnedItem.entry_title, key);
                         item.username = $utilityFunctions.CRYPT.decrypt(returnedItem.entry_username, key);
                         item.password = $utilityFunctions.CRYPT.decrypt(returnedItem.entry_password, key);
+                        $log.debug('AddItemFactory.retrieveEntry: Successfully retrieved entry from DB ');
                         deferred.resolve(item);
                     }
                     else {
+                        $log.error('AddItemFactory.retrieveEntry: Error while retrieving entry from DB: ');
                         deferred.reject();
                     }
                 }, function (error) {
+                    $log.debug('AddItemFactory.retrieveEntry: Error while retrieving entry from DB: ' + error);
                     deferred.reject();
                 });
-
+                $log.debug('AddItemFactory.retrieveEntry: end');
                 return deferred.promise;
             },
             deleteEntry : function() {
+                $log.debug('AddItemFactory.deleteEntry: start');
                 var deferred = $q.defer();
 
                 $utilityFunctions.DB.deleteEntry(eid).then(function(result) {
@@ -161,28 +180,31 @@ angular.module('PassMan.services', [])
                         item.title = $utilityFunctions.CRYPT.decrypt(returnedItem.entry_title, key);
                         item.username = $utilityFunctions.CRYPT.decrypt(returnedItem.entry_username, key);
                         item.password = $utilityFunctions.CRYPT.decrypt(returnedItem.entry_password, key);
+                        $log.debug('AddItemFactory.deleteEntry: Entry deleted from DB');
                         deferred.resolve(item);
                     }
                     else {
+                        $log.debug('AddItemFactory.deleteEntry: some error orccurred while deletion. Length returned was zero');
                         deferred.reject();
                     }
                 }, function (error) {
+                    $log.debug('AddItemFactory.deleteEntry: Error while deletion: ' + error);
                     deferred.reject();
                 });
-
+                $log.debug('AddItemFactory.deleteEntry: end');
                 return deferred.promise;
             }
         };
     }])
-    .factory('ChangePinFactory', ['$utilityFunctions', '$q', function($utilityFunctions, $q) {
+    .factory('ChangePinFactory', ['$utilityFunctions', '$q', '$log', function($utilityFunctions, $q, $log) {
         return {
             changePinFormSubmit : function(oldPin, newPin, confirmPin) {
+                $log.debug('ChangePinFactory.changePinFormSubmit: start');
                 var deferred = $q.defer();
 
-                
+                $log.debug('ChangePinFactory.changePinFormSubmit: Getting Entries');
                 deferred.notify("Getting Entries");
                 $utilityFunctions.DB.retrieveEntries().then(function (result) {
-                    console.dir(result.item(0));
                     itemList = [];
                     for (var i = 0; i < result.length; i++) {
                         var newItem = {};
@@ -199,42 +221,42 @@ angular.module('PassMan.services', [])
 
                         itemList.push(newItem);
                     }
-                    console.log("re-encrypted list");
-                    console.log(itemList);
 
+                    $log.debug('ChangePinFactory.changePinFormSubmit: Re-encrypting entries');
                     var updates = [];
                     for(var i = 0 ; i < itemList.length; i++) {
                         updates.push($utilityFunctions.DB.editEntry(itemList[i].title, itemList[i].username, itemList[i].password, itemList[i].eid));
                     }
 
                     $q.all(updates).then(function(result) {
-                        console.log("all rows updated");
+                        $log.debug('ChangePinFactory.changePinFormSubmit: All rows re-encrypted successfully');
                         deferred.resolve();
                     }, function(error) {
-                        console.log("error white updating rows");
-                        console.dir(error);
+                        $log.error('ChangePinFactory.changePinFormSubmit: Error: ' + error);
                         deferred.reject();
                     });
 
                 }, function (error) {
-                    console.log("Error retrieving List");
+                    $log.error('ChangePinFactory.changePinFormSubmit: Error: ' + error);
                     deferred.reject();
                 });
-
+                $log.debug('ChangePinFactory.changePinFormSubmit: end');
                 return deferred.promise;
             },
             updateMasterPIN : function(newPIN, key) {
+                $log.debug('ChangePinFactory.updateMasterPIN: start');
                 var deferred = $q.defer();
 
 
                 var encryptedPIN = $utilityFunctions.CRYPT.encrypt(newPIN, key);
                 $utilityFunctions.DB.updateMasterPIN(encryptedPIN).then(function(result) {
+                    $log.debug('ChangePinFactory.updateMasterPIN: Master PIN updated');
                     deferred.resolve();
                 }, function(error) {
-                    console.log(error);
+                    $log.debug('ChangePinFactory.updateMasterPIN: Error' + error);
                     deferred.reject();
                 });
-
+                $log.debug('ChangePinFactory.updateMasterPIN: end');
                 return deferred.promise;
             }
         };

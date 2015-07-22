@@ -118,7 +118,7 @@ angular.module('PassMan.controllers', [])
                         $utilityFunctions.showAlert("Item Deleted", "Item successfully deleted");
                     },
                     function(error) {
-                        $log.debug('MainListController.deleteEntry: Error: ' + error);
+                        $log.error('MainListController.deleteEntry: Error: ' + error);
                         $utilityFunctions.showAlert("Error", "Error while deleting. Please try again");
                     });
             }, function() {});
@@ -153,7 +153,7 @@ angular.module('PassMan.controllers', [])
                     $scope.addItem.username = result.username;
                     $scope.addItem.password = result.password;
                 }, function(error) {
-                    $log.debug('AddItemController.beforeEnter: Error: ' + error);
+                    $log.error('AddItemController.beforeEnter: Error: ' + error);
                     $utilityFunctions.showAlert("Error", "Entry retrieval failed");
                 });
             }
@@ -173,7 +173,7 @@ angular.module('PassMan.controllers', [])
                     $utilityFunctions.showAlert("Entry Added", "Entry Added Successfully");
                     $scope.resetAddItemForm(form);
                 }, function(error) {
-                    $log.debug('AddItemController.addItemFormSubmit: Add Error: ' + error);
+                    $log.error('AddItemController.addItemFormSubmit: Add Error: ' + error);
                     $utilityFunctions.showAlert("Error", "Some error occurred. Please try again.");
                 });
             } else if ($scope.action === "edit" && $scope.addItem.eid) {
@@ -182,7 +182,7 @@ angular.module('PassMan.controllers', [])
                     $log.debug('AddItemController.addItemFormSubmit: Entry edited successfully');
                     $utilityFunctions.showAlert("Entry Edited", "Entry Edit Success");
                 }, function(error) {
-                    $log.debug('AddItemController.addItemFormSubmit: Edit Error: ' + error);
+                    $log.error('AddItemController.addItemFormSubmit: Edit Error: ' + error);
                     $utilityFunctions.showAlert("Error", "Some error occurred. Please try again.");
                 });
             }
@@ -225,7 +225,7 @@ angular.module('PassMan.controllers', [])
                         $scope.fieldsEnabled = false;
                     }
                 }, function(error) {
-                    $log.debug('ChangePinController.checkPin: error' + error);
+                    $log.error('ChangePinController.checkPin: error' + error);
                     $utilityFunctions.showAlert('Error', 'Sorry some error occurred');
                 });
             }
@@ -248,12 +248,12 @@ angular.module('PassMan.controllers', [])
                             pinChangingForm.$setPristine();
                             $utilityFunctions.showAlert("PIN Updated", "You have successfully updated the master PIN.");
                         }, function(error) {
-                            $log.debug('ChangePinController.pinChangingFormSubmission: Error while updating PIN: ' + error);
+                            $log.error('ChangePinController.pinChangingFormSubmission: Error while updating PIN: ' + error);
                         });
 
                         $ionicLoading.hide();
                     }, function(error) {
-                        $log.debug('ChangePinController.pinChangingFormSubmission: Error in changePINFormSubmit: ' + error);
+                        $log.error('ChangePinController.pinChangingFormSubmission: Error in changePINFormSubmit: ' + error);
                     }, function(notifyMessage) {
                         $ionicLoading.show({
                             template: '<h3>' + notifyMessage + '</h3><ion-spinner icon="ripple"></ion-spinner>',

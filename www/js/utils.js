@@ -9,21 +9,21 @@ angular.module('PassMan.utils', [])
             DB: {
                 config: function (name) {
                     dbName = name;
-                    console.log(dbName);
                 }
             },
-            $get: ['$ionicPopup', '$q', '$ionicHistory', '$rootScope', '$state', function ($ionicPopup, $q, $ionicHistory, $rootScope, $state) {
+            $get: ['$ionicPopup', '$q', '$ionicHistory', '$rootScope', '$state', '$log', function ($ionicPopup, $q, $ionicHistory, $rootScope, $state, $log) {
                 return {
                     deviceReady : function() {
-                        alert('deviceREady');
                         document.addEventListener("pause", function() {
-                            console.log("paused");
+                            $log.debug("deviceReady: App paused: start");
                             $ionicHistory.clearHistory();
                             $rootScope.masterPIN = '';
+                            $log.debug("deviceReady: App paused: end");
                         }, false);
                         document.addEventListener("resume", function() {
-                            console.log("resumed");
+                            $log.debug("deviceReady: App resumed: start");
                             $state.go('unlock');
+                            $log.debug("deviceReady: App resumed: end");
                         }, false);
                     },
                     localStorage: {
@@ -70,8 +70,9 @@ angular.module('PassMan.utils', [])
                     },
                     DB: {
                         create: function () {
+                            $log.debug("utils.DB.create start");
                             if (window.sqlitePlugin) {
-                                console.log('window.sqlitePlugin present');
+                                $log.debug("utils.DB: sqlitePlugin is present");
                                 db = window.sqlitePlugin.openDatabase({
                                     name: dbName,
                                     location: 2,
@@ -80,11 +81,13 @@ angular.module('PassMan.utils', [])
                                 });
                             }
                             else {
-                                console.log('window.sqlitePlugin is not present');
+                                $log.debug('utils.DB: window.sqlitePlugin is not present');
                                 db = openDatabase(dbName, '1.0', 'PassMan DB', 2 * 1024 * 1024);
                             }
+                            $log.debug("utils.DB.create end");
                         },
                         createTables: function () {
+                            $log.debug("utils.DB.createTables start");
                             db.transaction(function (tx) {
                                // tx.executeSql("DROP TABLE IF EXISTS TABLE_MASTER_PASS");
                                // tx.executeSql("DROP TABLE IF EXISTS TABLE_ENTRY");
@@ -92,120 +95,134 @@ angular.module('PassMan.utils', [])
 
                                 tx.executeSql("CREATE TABLE IF NOT EXISTS TABLE_MASTER_PASS (id integer primary key, password text)");
                                 tx.executeSql("CREATE TABLE IF NOT EXISTS TABLE_ENTRY (eid integer primary key, entry_title text, entry_username text, entry_password text)");
-                                console.log('Tables created successfully');
+                                $log.debug('utils.DB.createTables: Tables created successfully');
                             });
+                            $log.debug("utils.DB.createTables end");
                         },
                         insertMasterPIN: function (pin) {
+                            $log.debug("utils.DB.insertMasterPIN start");
                             var deferred = $q.defer();
                             db.transaction(function (tx) {
                                 tx.executeSql("INSERT INTO TABLE_MASTER_PASS (password) values(?)", [pin], function (tx, result) {
-                                    console.log("Master Password inserted with row Id: " + result.insertId);
+                                    $log.debug("utils.insertMasterPinMaster Password inserted with row Id: " + result.insertId);
                                     deferred.resolve();
                                 }, function (tx, error) {
-                                    console.log("Master password insertion failed: " + error);
+                                    $log.debug("utils.DB.insertMasterPINMaster password insertion failed: " + error);
                                     deferred.reject();
                                 });
                             });
-
+                            $log.debug("utils.DB.insertMasterPIN end");
                             return deferred.promise;
                         },
                         retrieveMasterPIN: function () {
                             var deferred = $q.defer();
+                            $log.debug("utils.DB.retrieveMasterPIN start");
                             db.transaction(function (tx) {
                                 tx.executeSql("SELECT password as password FROM TABLE_MASTER_PASS WHERE id = ?", [1], function (tx, result) {
-                                    console.log("Getting master pass from database success");
+                                    $log.debug("utils.DB.retrieveMasterPIN: Getting master pass from database success");
                                     deferred.resolve(result.rows);
                                 }, function (tx, error) {
-                                    console.log("Getting master pass from database failed");
+                                    $log.error("utils.DB.retrieveMasterPIN: Getting master pass from database failed" + error);
                                     deferred.reject();
                                 });
                             });
+                            $log.debug("utils.DB.retrieveMasterPIN end");
                             return deferred.promise;
                         },
                         updateMasterPIN : function(newPin) {
+                            $log.debug("utils.DB.updateMasterPIN start");
                             var deferred = $q.defer();
 
                             db.transaction(function(tx) {
                                 tx.executeSql("UPDATE TABLE_MASTER_PASS SET password = ? where id = 1", [newPin], function(tx, result) {
-                                    console.log("Master PIN updated successfully");
+                                    $log.debug("utils.DB.updateMasterPIN: Master PIN updated successfully");
                                     deferred.resolve();
                                 }, function(tx, error) {
-                                    console.log("Error while updating master PIN");
-                                    console.log(error);
+                                   $log.error("utils.DB.updateMasterPIN: Error: " + error);
                                     deferred.reject();
                                 })
                             });
-
+                            $log.debug("utils.DB.updateMasterPIN end");
                             return deferred.promise;
                         },
                         insertEntry: function (title, username, password) {
+                            $log.debug("utils.DB.insertEntry start");
                             var deferred = $q.defer();
 
                             db.transaction(function (tx) {
                                 tx.executeSql("INSERT INTO TABLE_ENTRY (entry_title, entry_username, entry_password) VALUES (?, ?, ?)", [title, username, password], function (tx, result) {
-                                    console.log("Entry added with id :" + result.insertId);
+                                    $log.debug("utils.DB.insertEntry: Entry added with id :" + result.insertId);
                                     deferred.resolve();
                                 }, function (tx, error) {
-                                    console.log("Entry insertion failed");
+                                    $log.error("utils.DB.insertEntry: Error: insertion failed: " + error);
                                     deferred.reject();
                                 });
                             });
-
+                            $log.debug("utils.DB.insertEntry end");
                             return deferred.promise;
                         },
                         editEntry: function (title, username, password, eid) {
+                            $log.debug("utils.DB.editEntry start");
                             var deferred = $q.defer();
 
                             db.transaction(function (tx) {
                                 tx.executeSql("UPDATE TABLE_ENTRY SET entry_title = ? , entry_username = ?, entry_password = ? WHERE eid = ?", [title, username, password, eid], function (tx, result) {
-                                    console.log("Entry edited with id :" + result);
+                                    $log.debug("utils.DB.editEntry: Entry edited with id :" + result);
                                     deferred.resolve();
                                 }, function (tx, error) {
-                                    console.log("Entry edit failed");
-                                    console.dir(error);
+                                    $log.error("utils.DB.editEntry: Error: " + error);
                                     deferred.reject();
                                 });
                             });
-
+                            $log.debug("utils.DB.editEntry end");
                             return deferred.promise;
                         },
                         retrieveEntries: function () {
+                            $log.debug("utils.DB.retrieveEntries start");
                             var deferred = $q.defer();
 
                             db.transaction(function (tx) {
                                 tx.executeSql("SELECT * FROM TABLE_ENTRY", [], function (tx, result) {
+                                    $log.debug("utils.DB.retrieveEntries: Entries retrieved");
                                     deferred.resolve(result.rows);
                                 }, function (error) {
+                                    $log.error("utils.DB.retrieveEntries: Error:" + error);
                                     deferred.reject();
                                 })
                             });
-
+                            $log.debug("utils.DB.retrieveEntries end");
                             return deferred.promise;
                         },
                         retrieveEntry: function (eid) {
+                            $log.debug("utils.DB.retrieveEntry start");
                             var deferred = $q.defer();
 
                             db.transaction(function (tx) {
                                 tx.executeSql("SELECT * FROM TABLE_ENTRY WHERE eid = ?", [eid], function (tx, result) {
+                                    $log.debug("utils.DB.retrieveEntry: Entries retireved");
                                     deferred.resolve(result.rows);
                                 }, function (error) {
+                                    $log.error("utils.DB.retrieveEntry: Error : " + error);
                                     deferred.reject();
                                 })
                             });
-
+                            $log.debug("utils.DB.retrieveEntry end");
                             return deferred.promise;
                         },
                         deleteEntry: function (eid) {
+                            $log.debug("utils.DB.deleteEntry start");
                             var deferred = $q.defer();
 
                             db.transaction(function (tx) {
                                 tx.executeSql("DELETE FROM TABLE_ENTRY WHERE eid = ?", [eid], function (tx, result) {
+                                    $log.debug("utils.DB.deleteEntry: Entry deleted");
                                     deferred.resolve();
                                 }, function (error) {
+                                    $log.error("utils.DB.deleteEntry: Error: " + error);
                                     deferred.reject();
                                 })
                             });
-
+                            $log.debug("utils.DB.deleteEntry end");
                             return deferred.promise;
                         }
                     },
@@ -223,15 +240,13 @@ angular.module('PassMan.utils', [])
 
                         encrypt: function (plainText, key) {
                             var encryptedText;
-                            console.log("%c%s", "background: red; color: white", "Encryption Key: " + key);
+                            $log.debug("Encryption Key: " + key);
                             encryptedText = CryptoJS.AES.encrypt(plainText, key);
                             return encryptedText.toString();
                         },
                         decrypt: function (encryptedText, key) {
-                          //var base64Key  = CryptoJS.enc.Utf8.parse(key);
                           var decryptedText = CryptoJS.AES.decrypt(encryptedText, key);
-                          console.log("%c%s", "background: red; color: white", "Decryption Key: " + key);
-                          //var decryptedText = CryptoJS.AES.decrypt(encryptedText, CryptoJS.enc.Base64.parse(key), { iv: CryptoJS.enc.Hex.parse('00000000000000000000000000000000') });
+                          $log.debug("Decryption Key: " + key);
                           return decryptedText.toString(CryptoJS.enc.Utf8);
                         }
 

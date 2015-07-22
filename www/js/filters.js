@@ -10,13 +10,12 @@ angular.module('PassMan.filters', [])
 
             for(var i = 0; i < entries.length; i++) {
                 var decryptedTitle =  $utilityFunctions.CRYPT.decrypt(entries[i].title, $rootScope.masterPIN);
-                console.log(decryptedTitle);
+
                 if(decryptedTitle.toLowerCase().indexOf(searchTerm.toLowerCase()) != -1) {
                     returnArray.push(entries[i]);
                 }
             }
-            console.log('asfs');
-            console.dir(returnArray);
+
             return returnArray;
         }
     }]);
