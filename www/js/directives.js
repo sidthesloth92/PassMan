@@ -17,8 +17,9 @@ angular.module('PassMan.directives', []).directive('bottomMenu', ['$state', '$lo
                 $log.debug('directives.bottomMenu.toggleShow: start');
                 
                 scope.isShown = !scope.isShown;
+                document.querySelector('.slide_up_button').classList.toggle('slide_up_button_display');
                 document.querySelector('.custom_bottom_menu_overlay').classList.toggle('custom_bottom_menu_overlay_stretch');
-            
+                
                 $log.debug('directives.bottomMenu.toggleShow: end');
             };
 
