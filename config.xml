@@ -2,11 +2,12 @@
 <widget id="com.passman" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>PassMan</name>
   <description>
-        An Ionic Framework and Cordova project.
-    </description>
-  <author email="hi@ionicframework" href="http://ionicframework.com/">
-      Ionic Framework Team
-    </author>
+        A simple no Interner password manager.
+  </description>
+
+  <author email="dinaenrique@gmail.com" href="http://dbwriteups.wordpress.com/">
+      Someone who loves everything programming, Ice cream and Cats.
+  </author>
   <content src="index.html"/>
   <access origin="*"/>
   <preference name="webviewbounce" value="false"/>

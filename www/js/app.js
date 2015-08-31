@@ -5,8 +5,8 @@
 // the 2nd parameter is an array of 'requires'
 angular.module('PassMan', ['ionic', 'PassMan.controllers', 'PassMan.services', 'PassMan.filters', 'PassMan.directives', 'PassMan.utils'])
 
-    .run(['$ionicPlatform', '$utilityFunctions', '$rootScope', '$log', function ($ionicPlatform, $utilityFunctions, $rootScope, $log) {
-        $ionicPlatform.ready(function () {
+.run(['$ionicPlatform', '$utilityFunctions', '$rootScope', '$ionicConfig', '$log', function($ionicPlatform, $utilityFunctions, $rootScope, $ionicConfig, $log) {
+        $ionicPlatform.ready(function() {
             $log.debug('run start');
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
@@ -19,6 +19,8 @@ angular.module('PassMan', ['ionic', 'PassMan.controllers', 'PassMan.services', '
 
             $log.debug('run end');
         });
+
+        $ionicConfig.views.swipeBackEnabled(false);
 
         //creating the database
         $utilityFunctions.DB.create();
@@ -34,6 +36,15 @@ angular.module('PassMan', ['ionic', 'PassMan.controllers', 'PassMan.services', '
 
         $rootScope.masterPIN = '';
         $rootScope.itemList = [];
+        $rootScope.time = 0;
+
+        document.addEventListener('click', function() {
+            $rootScope.time = 0;
+        });
+
+        document.addEventListener('touch', function() {
+            $rootScope.time = 0;
+        });
 
         document.addEventListener("deviceready", $utilityFunctions.deviceReady, false);
 
@@ -45,7 +56,7 @@ angular.module('PassMan', ['ionic', 'PassMan.controllers', 'PassMan.services', '
             console.log('apsu');
         }
     }])
-    .config(['$stateProvider', '$urlRouterProvider', '$utilityFunctionsProvider', '$logProvider', function ($stateProvider, $urlRouterProvider, $utilityFunctionsProvider, $logProvider) {
+    .config(['$stateProvider', '$urlRouterProvider', '$utilityFunctionsProvider', '$logProvider', function($stateProvider, $urlRouterProvider, $utilityFunctionsProvider, $logProvider) {
         console.log("config start");
         $stateProvider
             .state('unlock', {
@@ -62,14 +73,14 @@ angular.module('PassMan', ['ionic', 'PassMan.controllers', 'PassMan.services', '
                 templateUrl: 'templates/pages/add_item.html',
                 controller: 'AddItemController'
             }).state('change_pin', {
-                url : '/change_pin',
-                templateUrl : 'templates/pages/change_pin.html',
+                url: '/change_pin',
+                templateUrl: 'templates/pages/change_pin.html',
                 controller: 'ChangePinController'
             });
         $urlRouterProvider.otherwise('/unlock');
 
-        $logProvider.debugEnabled(true);
+        $logProvider.debugEnabled(false);
 
         $utilityFunctionsProvider.DB.config('PassMan.db');
-        
+
     }]);

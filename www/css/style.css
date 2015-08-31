@@ -1,12 +1,18 @@
 /*------------------------------------------------------- VARIABLES -----------------------------------------------*/
 /*------------------------------------------------------- COMMON -----------------------------------------------*/
+@font-face {
+  font-family: 'Lato';
+  src: url("fonts/Lato-Thin.ttf") format("truetype"); }
 ion-content,
 ion-header-bar {
   background: #2D2E3A !important;
-  color: #FFFFFF; }
+  color: #FFFFFF;
+  font-family: 'Lato', sans-serif; }
 
 ion-header-bar {
   border-bottom: 1px solid #659FFB !important; }
+  ion-header-bar .left-buttons .ion-chevron-left {
+    padding: 0px 10px !important; }
 
 input,
 input[disabled] {
@@ -69,7 +75,10 @@ input::-webkit-placeholder {
     border-color: #659FFB;
     color: #FFFFFF;
     border-style: solid;
-    border-width: 0px 0px 1px 0px; }
+    border-width: 0px 0px 1px 0px;
+    font-family: 'Lato', sans-serif;
+    font-size: 20px;
+    font-weight: 200; }
     .keypad .row .col-33:nth-child(2) {
       border-width: 0px 1px 1px 1px; }
   .keypad .row:last-child .col-33 {
@@ -80,7 +89,8 @@ key-indicator {
   width: 100%; }
   key-indicator .label {
     text-align: center;
-    margin: 30px 0px; }
+    margin: 30px 0px;
+    font-family: 'Lato', sans-serif; }
   key-indicator .image_wrapper {
     text-align: center; }
     key-indicator .image_wrapper img {

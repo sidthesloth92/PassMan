@@ -52,6 +52,7 @@ angular.module('PassMan.controllers', [])
                 if (result) {
                     $log.debug("PIN matches");
                     $rootScope.masterPIN = $scope.pinElements.loginPin;
+                    $utilityFunctions.timeout();
                     $state.go('main_list');
                 } else {
                     $log.debug("PIN did not match");
@@ -158,6 +159,7 @@ angular.module('PassMan.controllers', [])
             }
 
             $scope.action = action;
+            addItemScope = $scope;
             $log.debug('AddItemController.beforeEnter: end');
         });
 
@@ -171,7 +173,7 @@ angular.module('PassMan.controllers', [])
                     AddItemFactory.addItemFormSubmit($scope.addItem, $rootScope.masterPIN).then(function(result) {
                         $log.debug('AddItemController.addItemFormSubmit: Entry added successfully');
                         $utilityFunctions.showAlert("Entry Added", "Entry Added Successfully");
-                        $scope.resetAddItemForm(form);
+                        $scope.resetAddItemForm(addItemForm);
                     }, function(error) {
                         $log.error('AddItemController.addItemFormSubmit: Add Error: ' + error);
                         $utilityFunctions.showAlert("Error", "Some error occurred. Please try again.");
@@ -224,6 +226,8 @@ angular.module('PassMan.controllers', [])
                     } else {
                         $log.debug('ChangePinController.checkPin: failed');
                         $scope.fieldsEnabled = false;
+                        $scope.changePinForm.newPin = '';
+                        $scope.changePinForm.confirmPin = '';
                     }
                 }, function(error) {
                     $log.error('ChangePinController.checkPin: error' + error);
