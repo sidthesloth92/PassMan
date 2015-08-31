@@ -3,26 +3,28 @@
         <a class="button button-clear ion-chevron-left ion" ng-click="$ionicGoBack($event)"></a>
     </ion-nav-buttons>
     <ion-content>
-        <form name="pinChangingForm" ng-submit="pinChangingFormSubmission(pinChangingForm)"
-              novalidate>
-            <div class="list">
-                <label class="item item-input item-floating-label">
-                    <span class="input-label">Old PIN</span>
-                    <input type="tel" name="oldPin" placeholder="Old PIN" ng-model="changePinForm.oldPin" required ng-change="checkPin(changePinForm.oldPin)">
-                </label>
-                <label class="item item-input item-floating-label">
-                    <span class="input-label">New PIN</span>
-                    <input type="tel" name="newPin" placeholder="New PIN" ng-model="changePinForm.newPin" ng-disabled="!fieldsEnabled" ng-pattern="/^[0-9]{4}$/g" required>
-                </label>
-                <span ng-show="pinChangingForm.newPin.$invalid && !pinChangingForm.newPin.$pristine" class="errorMessage">PIN should be a 4 digit number</span>
-                <label class="item item-input item-floating-label">
-                    <span class="input-label">Confirm PIN</span>
-                    <input type="tel" name="confirmPin" placeholder="Confirm PIN" ng-model="changePinForm.confirmPin" ng-disabled="!fieldsEnabled" ng-pattern="/^[0-9]{4}$/g" required>
-                </label>
-                <span ng-show="!pinChangingForm.newPin.$pristine && !pinChangingForm.confirmPin.$pristine && !(pinChangingForm.newPin.$viewValue == pinChangingForm.confirmPin.$viewValue)" class="errorMessage">PIN's do not match</span>
-            </div>
-
-            <button type="submit" class="button button-block button-outline">Change PIN</button>
-        </form>
+        <div class="change_pin_wrapper">
+            <form name="pinChangingForm" ng-submit="pinChangingFormSubmission(pinChangingForm)" novalidate>
+                <div class="list">
+                    <label class="item item-input item-floating-label">
+                        <span class="input-label">Old PIN</span>
+                        <input type="tel" name="oldPin" placeholder="Old PIN" ng-model="changePinForm.oldPin" required ng-change="checkPin(changePinForm.oldPin)">
+                    </label>
+                    <label class="item item-input item-floating-label">
+                        <span class="input-label">New PIN</span>
+                        <input type="tel" name="newPin" placeholder="New PIN" ng-model="changePinForm.newPin" ng-disabled="!fieldsEnabled" ng-pattern="/^[0-9]{4}$/g" required>
+                    </label>
+                    <span ng-show="pinChangingForm.newPin.$invalid && !pinChangingForm.newPin.$pristine" class="errorMessage">PIN should be a 4 digit number</span>
+                    <label class="item item-input item-floating-label">
+                        <span class="input-label">Confirm PIN</span>
+                        <input type="tel" name="confirmPin" placeholder="Confirm PIN" ng-model="changePinForm.confirmPin" ng-disabled="!fieldsEnabled" ng-pattern="/^[0-9]{4}$/g" required>
+                    </label>
+                    <div class="error_messages_wrapper">
+                        <span ng-show="!pinChangingForm.newPin.$pristine && !pinChangingForm.confirmPin.$pristine && !(pinChangingForm.newPin.$viewValue == pinChangingForm.confirmPin.$viewValue)" class="errorMessage">PIN's do not match</span>
+                    </div>
+                    <button type="submit" class="button button-block">Change PIN</button>
+                </div>
+            </form>
+        </div>
     </ion-content>
 </ion-view>

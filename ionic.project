@@ -1,4 +1,12 @@
 {
   "name": "PassMan",
-  "app_id": ""
+  "app_id": "47802720",
+  "gulpStartupTasks": [
+    "sass",
+    "watch"
+  ],
+  "watchPatterns": [
+    "www/**/*",
+    "!www/lib/**/*"
+  ]
 }

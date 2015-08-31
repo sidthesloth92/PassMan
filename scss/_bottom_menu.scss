@@ -1,0 +1,47 @@
+/*.bottom_menu {
+    overflow-x: hidden;
+}*/
+
+.custom_bottom_menu_overlay {
+    position: absolute;
+    z-index: 1000;
+    bottom: 0px;
+    left: 0px;
+    .custom_bottom_menu_wrapper {
+        position: absolute;
+        bottom: 0px;
+        left: 0px;
+        width: 100%;
+        overflow: hidden;
+        .slide_up_button {
+            display: block;
+            opacity: 1 !important;
+            background-color: $theme-background-color !important;
+        }
+        .custom_bottom_menu {
+            transition: 0.1s all linear;
+            line-height: 100%;
+            &.ng-hide {
+                line-height: 0px;
+            }
+            li {
+                border-top: 1px solid $theme-primary-color;
+                color: white;
+                background: transparent;
+            }
+            & li:last-child {
+                border-bottom: 0px;
+            }
+        }
+    }
+}
+
+.custom_bottom_menu_overlay_stretch {
+    top: 0px;
+    left: 0px;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.slide_up_button_display {
+    background: rgba(255, 255, 255, 1) !important;
+}

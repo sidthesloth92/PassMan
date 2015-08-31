@@ -1,13 +1,13 @@
 angular.module('PassMan.controllers', [])
     .controller('UnlockController', ['$scope', '$utilityFunctions', '$state', '$rootScope', 'UnlockFactory', '$log', function($scope, $utilityFunctions, $state, $rootScope, UnlockFactory, $log) {
         $rootScope.isPINSet = false;
-        $scope.pinForm = {
+
+        $scope.pinElements = {
             pin: '',
-            confirmPin: ''
-        };
-        $scope.loginForm = {
-            loginPIN: ''
-        };
+            confirmPin: '',
+            loginPin: ''
+        }
+        $scope.active = "";
 
         $scope.$on('$ionicView.beforeEnter', function() {
             $log.debug("UnlockController.beforeEnter start");
@@ -15,57 +15,56 @@ angular.module('PassMan.controllers', [])
 
             if (isPINSet === "false") {
                 $rootScope.isPINSet = false;
+                $scope.active = "pin";
             } else {
                 $rootScope.isPINSet = true;
+                $scope.active = "loginPin";
             }
 
-            $scope.loginForm.loginPIN = '';
+            $scope.pinElements.pin = '';
+            $scope.pinElements.confirmPin = '';
+            $scope.pinElements.loginPin = '';
 
             $log.debug("UnlockController.beforeEnter end");
         });
 
-        $scope.checkPin = function(pinValue) {
-            $log.debug("UnlockController.checkPin start");
-            if (pinValue && pinValue.length == 4) {
-                UnlockFactory.checkPIN(pinValue).then(function(result) {
-                    if (result) {
-                        $log.debug("PIN matches");
-                        $rootScope.masterPIN = pinValue;
-                        $state.go('main_list');
-                    } else {
-                        $log.debug("PIN did not match");
-                        $rootScope.masterPIN = '';
-                    }
-                }, function(error) {
-                    $log.error("Error while checking PIN: " + error);
-                    
-                    $rootScope.masterPIN = '';
-                    $utilityFunctions.showAlert('Error', 'Sorry some error occurred');
-                });
-            }
-            $log.debug("UnlockController.checkPin end");
-        };
+        $scope.setMasterPin = function() {
+            UnlockFactory.pinSettingFormSubmission($scope.pinElements.pin, $scope.pinElements.confirmPin).then(function(result) {
+                $log.debug("Pin Changed Successfully");
 
-        $scope.pinSettingFormSubmission = function(form) {
-             $log.debug("UnlockController.pinSettingFormSubmission start");
-             if(form.$valid) {
-                if($scope.pinForm.pin === $scope.pinForm.confirmPin) {
-                    UnlockFactory.pinSettingFormSubmission($scope.pinForm.pin, $scope.pinForm.confirmPin).then(function(result) {
-                        $log.debug("Pin Changed Successfully");
-                        
-                        $rootScope.isPINSet = true;
-                        $scope.pinForm.pin = "";
-                        $scope.pinForm.confirmPin = "";
-                    }, function(error) {
-                        $log.error("Error while setting Master PIN: " + error);
-                        
-                        $rootScope.isPINSet = false;
-                        $scope.pinForm.pin = "";
-                        $scope.pinForm.confirmPin = "";
-                    });
+                $rootScope.isPINSet = true;
+                $scope.pinElements.pin = "";
+                $scope.pinElements.confirmPin = "";
+                $scope.active = "loginPin";
+            }, function(error) {
+                $log.error("Error while setting Master PIN: " + error);
+
+                $rootScope.isPINSet = false;
+                $scope.pinElements.pin = "";
+                $scope.pinElements.confirmPin = "";
+            });
+        }
+
+        $scope.checkPin = function() {
+            $log.debug("UnlockController.checkPin start");
+
+            UnlockFactory.checkPIN($scope.pinElements.loginPin).then(function(result) {
+                if (result) {
+                    $log.debug("PIN matches");
+                    $rootScope.masterPIN = $scope.pinElements.loginPin;
+                    $state.go('main_list');
+                } else {
+                    $log.debug("PIN did not match");
+                    $rootScope.masterPIN = '';
                 }
-            }
-            $log.debug("UnlockController.pinSettingFormSubmission end");
+            }, function(error) {
+                $log.error("Error while checking PIN: " + error);
+
+                $rootScope.masterPIN = '';
+                $utilityFunctions.showAlert('Error', 'Sorry some error occurred');
+            });
+
+            $log.debug("UnlockController.checkPin end");
         };
     }])
     .controller('MainListController', ['$scope', '$rootScope', 'MainListFactory', '$utilityFunctions', '$log', function($scope, $rootScope, MainListFactory, $utilityFunctions, $log) {
@@ -75,7 +74,7 @@ angular.module('PassMan.controllers', [])
 
         $scope.$on('$ionicView.beforeEnter', function() {
             $log.debug('MainListController.beforeEnter: start');
-            
+
             $rootScope.itemList = [];
             MainListFactory.loadList($rootScope.masterPIN).then(function(itemList) {
                 $rootScope.itemList = itemList;
@@ -105,7 +104,7 @@ angular.module('PassMan.controllers', [])
 
         $scope.deleteEntry = function(eid) {
             $log.debug('MainListController.deleteEntry: start');
-            
+
             $utilityFunctions.showConfirm("Confirm Delete", "Are you sure you want to delete the item?").then(function() {
                 MainListFactory.deleteEntry(eid).then(function() {
                         $log.debug('MainListController.deleteEntry: deleting item from the list');
@@ -163,28 +162,30 @@ angular.module('PassMan.controllers', [])
         });
 
 
-        $scope.addItemFormSubmit = function(form) {
+        $scope.addItemFormSubmit = function(addItemForm) {
             $log.debug('AddItemController.addItemFormSubmit: start');
 
-            if ($scope.action === "add") {
-                $log.debug('AddItemController.addItemFormSubmit:  User Action: Add');
-                AddItemFactory.addItemFormSubmit($scope.addItem, $rootScope.masterPIN).then(function(result) {
-                    $log.debug('AddItemController.addItemFormSubmit: Entry added successfully');
-                    $utilityFunctions.showAlert("Entry Added", "Entry Added Successfully");
-                    $scope.resetAddItemForm(form);
-                }, function(error) {
-                    $log.error('AddItemController.addItemFormSubmit: Add Error: ' + error);
-                    $utilityFunctions.showAlert("Error", "Some error occurred. Please try again.");
-                });
-            } else if ($scope.action === "edit" && $scope.addItem.eid) {
-                $log.debug('AddItemController.addItemFormSubmit:  User Action: Edit');
-                AddItemFactory.editItemFormSubmit($scope.addItem, $rootScope.masterPIN, $scope.addItem.eid).then(function(result) {
-                    $log.debug('AddItemController.addItemFormSubmit: Entry edited successfully');
-                    $utilityFunctions.showAlert("Entry Edited", "Entry Edit Success");
-                }, function(error) {
-                    $log.error('AddItemController.addItemFormSubmit: Edit Error: ' + error);
-                    $utilityFunctions.showAlert("Error", "Some error occurred. Please try again.");
-                });
+            if (addItemForm.$valid) {
+                if ($scope.action === "add") {
+                    $log.debug('AddItemController.addItemFormSubmit:  User Action: Add');
+                    AddItemFactory.addItemFormSubmit($scope.addItem, $rootScope.masterPIN).then(function(result) {
+                        $log.debug('AddItemController.addItemFormSubmit: Entry added successfully');
+                        $utilityFunctions.showAlert("Entry Added", "Entry Added Successfully");
+                        $scope.resetAddItemForm(form);
+                    }, function(error) {
+                        $log.error('AddItemController.addItemFormSubmit: Add Error: ' + error);
+                        $utilityFunctions.showAlert("Error", "Some error occurred. Please try again.");
+                    });
+                } else if ($scope.action === "edit" && $scope.addItem.eid) {
+                    $log.debug('AddItemController.addItemFormSubmit:  User Action: Edit');
+                    AddItemFactory.editItemFormSubmit($scope.addItem, $rootScope.masterPIN, $scope.addItem.eid).then(function(result) {
+                        $log.debug('AddItemController.addItemFormSubmit: Entry edited successfully');
+                        $utilityFunctions.showAlert("Entry Edited", "Entry Edit Success");
+                    }, function(error) {
+                        $log.error('AddItemController.addItemFormSubmit: Edit Error: ' + error);
+                        $utilityFunctions.showAlert("Error", "Some error occurred. Please try again.");
+                    });
+                }
             }
 
             $log.debug('AddItemController.addItemFormSubmit: end');
@@ -236,9 +237,9 @@ angular.module('PassMan.controllers', [])
         $scope.pinChangingFormSubmission = function(pinChangingForm) {
             $log.debug('ChangePinController.pinChangingFormSubmission: start');
 
-            if(pinChangingForm.$valid) {
-                if($scope.changePinForm.newPin === $scope.changePinForm.confirmPin) {
-                    
+            if (pinChangingForm.$valid) {
+                if ($scope.changePinForm.newPin === $scope.changePinForm.confirmPin) {
+
                     ChangePinFactory.changePinFormSubmit($rootScope.masterPIN, $scope.changePinForm.newPin, $scope.changePinForm.confirmPin).then(function(result) {
                         ChangePinFactory.updateMasterPIN($scope.changePinForm.newPin, $scope.changePinForm.newPin).then(function(result) {
                             $log.debug('ChangePinController.pinChangingFormSubmission: Pin changed successfully');

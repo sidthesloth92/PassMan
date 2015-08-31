@@ -1,0 +1,56 @@
+.main_list_wrapper {
+    .search_item {
+        background: $theme-background-color;
+        border: 1px solid $theme-primary-color;
+        color: $theme-font-color;
+    }
+    .main_list {
+        .item-content,
+        ion-item,
+        .user_entry {
+            background: $theme-background-color;
+            color: $theme-font-color;
+        }
+        ion-item.active .item-content {
+            background: $theme-gradient !important;
+        }
+
+        ion-item {
+        	margin-top: 1px;
+        }
+        .user_entry {
+            position: relative;
+            div[class^="user_entry_"] > i {
+                display: inline-block;
+                width: 30px;
+                margin: 0px 25px;
+                font-size: 25px;
+                text-align: center;
+            }
+            div[class^="user_entry_"] > span {
+                vertical-align: top;
+            }
+            .eye_wrapper {
+                position: absolute;
+                bottom: 0px;
+                right: 25px;
+                font-size: 25px;
+            }
+        }
+    }
+    .no_entry_message {
+        padding: 10px;
+        text-align: center;
+    }
+}
+
+.list .item.accordion-content {
+    line-height: 38px;
+    padding-top: 0;
+    padding-bottom: 0;
+    transition: 0.09s all linear;
+}
+
+.list .item.accordion-content.ng-hide {
+    line-height: 0px;
+}

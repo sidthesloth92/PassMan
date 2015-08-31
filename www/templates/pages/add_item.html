@@ -1,31 +1,32 @@
 <ion-view view-title="Add New Entry">
-
     <ion-nav-buttons side="left">
         <a class="button button-clear ion-chevron-left ion" ng-click="$ionicGoBack($event)"></a>
     </ion-nav-buttons>
     <ion-content>
-        
-        <form name="addItemForm" ng-submit="addItemFormSubmit(addItemForm)" novalidate>
-            <div class="list">
-                <label class="item item-input item-floating-label">
-                    <span class="input-label">Title</span>
-                    <input type="text" name="title" placeholder="Title" ng-model="addItem.title" required>
-                </label>
-                <label class="item item-input item-floating-label">
-                    <span class="input-label">Username</span>
-                    <input type="text" name="username" placeholder="Username" ng-model="addItem.username" required>
-                </label>
-                <label class="item item-input item-floating-label">
-                    <span class="input-label">Password</span>
-                    <input type="text" name="password" placeholder="Password" ng-model="addItem.password" required>
-                </label>
-            </div>
-            <span class="errorMessage" ng-show="(!addItemForm.title.$pristine && addItemForm.title.$invalid) || (!addItemForm.username.$pristine && addItemForm.username.$invalid) || (!addItemForm.password.$pristine && addItemForm.password.$invalid)">All fields are mandatory</span>
-            <button type="submit" class="button button-block button-outline button-no-side">
-                <span ng-show="action == 'add'">Add Entry</span>
-                <span ng-show="action == 'edit'">Edit Entry</span>
-            </button>
-        </form>
-
+        <div class="add_item_wrapper">
+            <form name="addItemForm" ng-submit="addItemFormSubmit(addItemForm)" novalidate>
+                <div class="list">
+                    <label class="item item-input item-floating-label">
+                        <span class="input-label">Title</span>
+                        <input type="text" name="title" placeholder="Title" ng-model="addItem.title" required>
+                    </label>
+                    <label class="item item-input item-floating-label">
+                        <span class="input-label">Username</span>
+                        <input type="text" name="username" placeholder="Username" ng-model="addItem.username" required>
+                    </label>
+                    <label class="item item-input item-floating-label">
+                        <span class="input-label">Password</span>
+                        <input type="text" name="password" placeholder="Password" ng-model="addItem.password" required>
+                    </label>
+                    <div class="error_messages_wrapper">
+                        <span class="errorMessage" ng-show="((!addItemForm.title.$pristine && addItemForm.title.$invalid) || (addItemForm.$submitted && addItemForm.title.$invalid)) || ((!addItemForm.username.$pristine && addItemForm.username.$invalid) || (addItemForm.$submitted && addItemForm.username.$invalid)) || ((!addItemForm.password.$pristine && addItemForm.password.$invalid) || (addItemForm.$submitted && addItemForm.password.$invalid))">All fields are mandatory</span>
+                    </div>
+                    <button type="submit" class="button button-block">
+                        <span ng-show="action == 'add'">Add Entry</span>
+                        <span ng-show="action == 'edit'">Edit Entry</span>
+                    </button>
+                </div>
+            </form>
+        </div>
     </ion-content>
 </ion-view>

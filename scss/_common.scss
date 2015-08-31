@@ -1,0 +1,149 @@
+/*------------------------------------------------------- VARIABLES -----------------------------------------------*/
+
+$theme-primary-color: #659FFB;
+$theme-font-color: #FFFFFF;
+$theme-background-color: #2D2E3A;
+$theme-gradient :  -webkit-linear-gradient(top, rgba(54,215,243,1) 0%, rgba(54,215,243,1) 12%, rgba(121,137,255,1) 100%);
+
+/*------------------------------------------------------- COMMON -----------------------------------------------*/
+
+ion-content,
+ion-header-bar {
+    background: $theme-background-color !important;
+    color: $theme-font-color;
+}
+
+ion-header-bar {
+    border-bottom: 1px solid $theme-primary-color !important;
+}
+
+input,
+input[disabled] {
+    color: $theme-font-color !important;
+    background: transparent;
+}
+
+input::-webkit-placeholder {
+    color: $theme-font-color !important;
+}
+
+.list {
+    background: $theme-background-color !important;
+    padding: 0px 10px;
+    .item {
+        border-color: $theme-primary-color;
+        border-width: 0px 0px 1px 0px;
+        .input-label {
+            color: $theme-font-color;
+        }
+    }
+    .error_messages_wrapper {
+        height: 40px;
+    }
+}
+
+.button {
+    background: $theme-gradient;
+    border: 0px;
+    color: $theme-font-color;
+}
+
+.ion,
+.icon {
+    color: $theme-primary-color !important;
+}
+
+
+/* Empty. Add your own CSS if you like */
+
+.popup-body {
+    text-align: center;
+}
+
+
+/*------------------------------------------------------ LOADER STYLING--------------------------------------------*/
+
+.loading-container .loading {
+    background-color: transparent;
+}
+
+.loading h3 {
+    color: black !important;
+}
+
+.spinner svg {
+    width: 100px;
+    height: 100px;
+}
+
+
+/*-------------------------------------------------- GENERAL STYLING ------------------------------------------------*/
+
+.errorMessage {
+    display: block;
+    padding: 5px;
+    color: orangered;
+}
+
+
+/*-------------------------------------------------- DIRECTIVES ------------------------------------------------*/
+
+.keypad {
+    position: absolute;
+    width: 100%;
+    bottom: 45px;
+    background: $theme-gradient;
+    .row {
+        .col-33 {
+            text-align: center;
+            padding: 20px 0px;
+            border-color: $theme-primary-color;
+            color: $theme-font-color;
+            border-style: solid;
+            border-width: 0px 0px 1px 0px;
+            &:nth-child(2) {
+                border-width: 0px 1px 1px 1px;
+            }
+        }
+        &:last-child {
+            .col-33 {
+                border-bottom: 0px;
+            }
+        }
+    }
+}
+
+key-indicator {
+    display: block;
+    width: 100%;
+
+    .label {
+        text-align: center;
+        margin: 30px 0px;
+    }
+    .image_wrapper {
+        text-align: center;
+        img {
+            width: 192px;
+            height: 192px;
+            margin-top: 20px;
+        }
+    }
+    .bubble_wrapper {
+        text-align: center;
+        margin: 20px 0px;
+        .bubble {
+            display: inline-block;
+            height: 30px;
+            width: 30px;
+            box-sizing: border-box;
+            margin: 0px 20px;
+            border-radius: 50%;
+            border: 8px solid rgba(0, 0, 0, 1);
+            background: black;
+        }
+        .bubble.filled {
+            background: $theme-primary-color;
+        }
+    }
+}

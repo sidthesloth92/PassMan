@@ -1,111 +1,187 @@
+/*------------------------------------------------------- VARIABLES -----------------------------------------------*/
+/*------------------------------------------------------- COMMON -----------------------------------------------*/
+ion-content,
+ion-header-bar {
+  background: #2D2E3A !important;
+  color: #FFFFFF; }
+
+ion-header-bar {
+  border-bottom: 1px solid #659FFB !important; }
+
+input,
+input[disabled] {
+  color: #FFFFFF !important;
+  background: transparent; }
+
+input::-webkit-placeholder {
+  color: #FFFFFF !important; }
+
+.list {
+  background: #2D2E3A !important;
+  padding: 0px 10px; }
+  .list .item {
+    border-color: #659FFB;
+    border-width: 0px 0px 1px 0px; }
+    .list .item .input-label {
+      color: #FFFFFF; }
+  .list .error_messages_wrapper {
+    height: 40px; }
+
+.button {
+  background: -webkit-linear-gradient(top, #36d7f3 0%, #36d7f3 12%, #7989ff 100%);
+  border: 0px;
+  color: #FFFFFF; }
+
+.ion,
+.icon {
+  color: #659FFB !important; }
+
 /* Empty. Add your own CSS if you like */
 .popup-body {
+  text-align: center; }
+
+/*------------------------------------------------------ LOADER STYLING--------------------------------------------*/
+.loading-container .loading {
+  background-color: transparent; }
+
+.loading h3 {
+  color: black !important; }
+
+.spinner svg {
+  width: 100px;
+  height: 100px; }
+
+/*-------------------------------------------------- GENERAL STYLING ------------------------------------------------*/
+.errorMessage {
+  display: block;
+  padding: 5px;
+  color: orangered; }
+
+/*-------------------------------------------------- DIRECTIVES ------------------------------------------------*/
+.keypad {
+  position: absolute;
+  width: 100%;
+  bottom: 45px;
+  background: -webkit-linear-gradient(top, #36d7f3 0%, #36d7f3 12%, #7989ff 100%); }
+  .keypad .row .col-33 {
     text-align: center;
-}
+    padding: 20px 0px;
+    border-color: #659FFB;
+    color: #FFFFFF;
+    border-style: solid;
+    border-width: 0px 0px 1px 0px; }
+    .keypad .row .col-33:nth-child(2) {
+      border-width: 0px 1px 1px 1px; }
+  .keypad .row:last-child .col-33 {
+    border-bottom: 0px; }
 
-.button-no-side  {
-    border-left: 0px !important;
-    border-right: 0px !important;
-}
+key-indicator {
+  display: block;
+  width: 100%; }
+  key-indicator .label {
+    text-align: center;
+    margin: 30px 0px; }
+  key-indicator .image_wrapper {
+    text-align: center; }
+    key-indicator .image_wrapper img {
+      width: 192px;
+      height: 192px;
+      margin-top: 20px; }
+  key-indicator .bubble_wrapper {
+    text-align: center;
+    margin: 20px 0px; }
+    key-indicator .bubble_wrapper .bubble {
+      display: inline-block;
+      height: 30px;
+      width: 30px;
+      box-sizing: border-box;
+      margin: 0px 20px;
+      border-radius: 50%;
+      border: 8px solid black;
+      background: black; }
+    key-indicator .bubble_wrapper .bubble.filled {
+      background: #659FFB; }
 
-/*----------------------------------------------------------UNLOCK STYLING------------------------------------------------*/
-
-/*-----------------------------------------------------x-MAIN ACCORDION STYLING--------------------------------------------*/
-.list .item.accordion-content {
-    line-height: 38px;
-    padding-top: 0;
-    padding-bottom: 0;
-    transition: 0.09s all linear;
-}
-.list .item.accordion-content.ng-hide {
-    line-height: 0px;
-}
-
-
-.user_entry {
-    
-}
-
-div[class^="user_entry_"]:nth-child(1) {
-    border-bottom: 1px solid rgb(221, 221, 221);
-}
-div[class^="user_entry_"] > i {
+.main_list_wrapper .search_item {
+  background: #2D2E3A;
+  border: 1px solid #659FFB;
+  color: #FFFFFF; }
+.main_list_wrapper .main_list .item-content,
+.main_list_wrapper .main_list ion-item,
+.main_list_wrapper .main_list .user_entry {
+  background: #2D2E3A;
+  color: #FFFFFF; }
+.main_list_wrapper .main_list ion-item.active .item-content {
+  background: -webkit-linear-gradient(top, #36d7f3 0%, #36d7f3 12%, #7989ff 100%) !important; }
+.main_list_wrapper .main_list ion-item {
+  margin-top: 1px; }
+.main_list_wrapper .main_list .user_entry {
+  position: relative; }
+  .main_list_wrapper .main_list .user_entry div[class^="user_entry_"] > i {
     display: inline-block;
     width: 30px;
-    margin-right: 15px;
-    text-align: center;
-}
-
-div[class^="user_entry_"] > span{
-    vertical-align: top;
-}
-
-/*------------------------------------------------------CUSTOM BOTTOM MENU STYLING--------------------------------------------*/
-
-.bottom_menu {
-    overflow-x: hidden;
-}
-
-.custom_bottom_menu_overlay {
+    margin: 0px 25px;
+    font-size: 25px;
+    text-align: center; }
+  .main_list_wrapper .main_list .user_entry div[class^="user_entry_"] > span {
+    vertical-align: top; }
+  .main_list_wrapper .main_list .user_entry .eye_wrapper {
     position: absolute;
-    z-index: 1000;
     bottom: 0px;
-    left: 0px;
-}
+    right: 25px;
+    font-size: 25px; }
+.main_list_wrapper .no_entry_message {
+  padding: 10px;
+  text-align: center; }
 
-.custom_bottom_menu_overlay_stretch {
-    top: 0px;
-    left: 0px;
-    background: rgba(0, 0, 0, 0.4);
-}
+.list .item.accordion-content {
+  line-height: 38px;
+  padding-top: 0;
+  padding-bottom: 0;
+  transition: 0.09s all linear; }
 
-.custom_bottom_menu_wrapper {
+.list .item.accordion-content.ng-hide {
+  line-height: 0px; }
+
+.add_item_wrapper .list .error_messages_wrapper {
+  height: 40px; }
+
+/*.bottom_menu {
+    overflow-x: hidden;
+}*/
+.custom_bottom_menu_overlay {
+  position: absolute;
+  z-index: 1000;
+  bottom: 0px;
+  left: 0px; }
+  .custom_bottom_menu_overlay .custom_bottom_menu_wrapper {
     position: absolute;
     bottom: 0px;
     left: 0px;
     width: 100%;
-    overflow: hidden;
-}
+    overflow: hidden; }
+    .custom_bottom_menu_overlay .custom_bottom_menu_wrapper .slide_up_button {
+      display: block;
+      opacity: 1 !important;
+      background-color: #2D2E3A !important; }
+    .custom_bottom_menu_overlay .custom_bottom_menu_wrapper .custom_bottom_menu {
+      transition: 0.1s all linear;
+      line-height: 100%; }
+      .custom_bottom_menu_overlay .custom_bottom_menu_wrapper .custom_bottom_menu.ng-hide {
+        line-height: 0px; }
+      .custom_bottom_menu_overlay .custom_bottom_menu_wrapper .custom_bottom_menu li {
+        border-top: 1px solid #659FFB;
+        color: white;
+        background: transparent; }
+      .custom_bottom_menu_overlay .custom_bottom_menu_wrapper .custom_bottom_menu li:last-child {
+        border-bottom: 0px; }
 
-.slide_up_button {
-    display:block;
-    opacity: 1 !important;
-}
+.custom_bottom_menu_overlay_stretch {
+  top: 0px;
+  left: 0px;
+  background: rgba(0, 0, 0, 0.4); }
 
 .slide_up_button_display {
-    background: rgba(255, 255, 255, 1) !important;
-}
+  background: white !important; }
 
-.custom_bottom_menu {
-    transition: 0.1s all linear;
-    line-height: 100%;
-}
-
-.custom_bottom_menu.ng-hide {
-    line-height: 0px;
-}
-
-.custom_bottom_menu li:last-child {
-    border-bottom: 0px;
-}
-
-.loading-container .loading {
-    background-color: transparent;
-}
-
-.loading h3 {
-    color: black !important;
-}
-
-.spinner svg {
-    width: 100px;
-    height: 100px;
-}
-
-/*-------------------------------------------------- GENERAL STYLING ------------------------------------------------*/
-
-.errorMessage {
-    display: block;
-    padding: 5px;
-    color: orangered;
-}
+/*# sourceMappingURL=style.css.map */

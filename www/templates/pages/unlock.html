@@ -1,33 +1,24 @@
-<ion-view view-title="PassMan">
+<ion-view align-title="center" view-title="PassMan">
     <ion-content>
-
         <div class="row" ng-show="!isPINSet">
             <div class="col">
-                <h4 class="badge">Set Your PIN</h4>
-
-                <form name="pinSettingForm" ng-submit="pinSettingFormSubmission(pinSettingForm)" novalidate>
-                    <ion-item class="item-input">
-                        <input type="tel" name="pin" placeholder="Enter PIN" ng-model="pinForm.pin" ng-pattern="/^[0-9]{4}$/g" required/> 
-                    </ion-item>
-                    <span ng-show="pinSettingForm.pin.$invalid && !pinSettingForm.pin.$pristine" class="errorMessage">PIN should be a 4 digit number</span>
-                    <ion-item class="item-input">
-                        <input type="tel" name="confirmPin" placeholder="Confirm PIN" ng-model="pinForm.confirmPin" ng-pattern="/^[0-9]{4}$/g" required/>
-                    </ion-item>
-                    <span ng-show="!pinSettingForm.pin.$pristine && !pinSettingForm.confirmPin.$pristine && !(pinSettingForm.pin.$viewValue == pinSettingForm.confirmPin.$viewValue)" class="errorMessage">PIN's do not match</span>
-
-                    <button type="submit" class="button button-block button-outline">Set PIN</button>
-                </form>
+                <key-indicator value="pinElements.pin" ng-click="setActive('pin')">
+                    <div class="label">Enter Passcode</div>
+                </key-indicator>
+                <key-indicator value="pinElements.confirmPin" ng-click="setActive('confirmPin')">
+                    <div class="label">Re-Enter Passcode</div>
+                </key-indicator>
             </div>
         </div>
-
         <div class="row" ng-show="isPINSet">
             <div class="col">
-                <ion-item class="item-input item-floating-label" style="margin-top: 10px">
-                    <input type="tel" placeholder="Enter 4-digit PIN" ng-model="loginForm.loginPIN" ng-pattern="/^[0-9]{4}$/g" ng-change="checkPin(loginForm.loginPIN)" required/>
-                </ion-item>
+                <key-indicator value="pinElements.loginPin" ng-click="setActive('loginPin')">
+                    <div class="image_wrapper">
+                        <img ng-src="img/icon_black.png" />
+                    </div>
+                </key-indicator>
             </div>
         </div>
-
-
     </ion-content>
+    <keypad pin-elements="pinElements" active="active" set-master-pin="setMasterPin()" check-pin="checkPin()"></keypad>
 </ion-view>
