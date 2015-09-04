@@ -2,17 +2,17 @@
     <ion-content>
         <div class="row" ng-show="!isPINSet">
             <div class="col">
-                <key-indicator value="pinElements.pin" ng-click="setActive('pin')">
+                <key-indicator value="pinElements.pin" ng-click="setActive('pin')" class="pin_indicator">
                     <div class="label">Enter Passcode</div>
                 </key-indicator>
-                <key-indicator value="pinElements.confirmPin" ng-click="setActive('confirmPin')">
+                <key-indicator value="pinElements.confirmPin" ng-click="setActive('confirmPin')" class="confirm_pin_indicator">
                     <div class="label">Re-Enter Passcode</div>
                 </key-indicator>
             </div>
         </div>
         <div class="row" ng-show="isPINSet">
             <div class="col">
-                <key-indicator value="pinElements.loginPin" ng-click="setActive('loginPin')">
+                <key-indicator value="pinElements.loginPin" ng-click="setActive('loginPin')" class="login_pin_indicator">
                     <div class="image_wrapper">
                         <img ng-src="img/icon_black.png" />
                     </div>

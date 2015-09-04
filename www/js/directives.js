@@ -35,7 +35,7 @@ angular.module('PassMan.directives', []).directive('bottomMenu', ['$state', '$lo
             }
         };
     }])
-    .directive('keypad', [function() {
+    .directive('keypad', ['$timeout', '$cordovaVibration', function($timeout, $cordovaVibration) {
         return {
             restrict: 'E',
             templateUrl: 'templates/directives/keypad.html',
@@ -74,8 +74,23 @@ angular.module('PassMan.directives', []).directive('bottomMenu', ['$state', '$lo
                             scope.checkPin();
                         }
                     } else {
-                        if ((scope.pinElements.pin.length == 4) && (scope.pinElements.confirmPin.length == 4) && (scope.pinElements.pin === scope.pinElements.confirmPin)) {
-                            scope.setMasterPin();
+                        if ((scope.pinElements.pin.length == 4) && (scope.pinElements.confirmPin.length == 4)) {
+                            if(scope.pinElements.pin === scope.pinElements.confirmPin) {
+                                scope.setMasterPin();
+                            }
+                            else {
+                                
+                                document.querySelector('.pin_indicator .bubble_wrapper').classList.add('shake');
+                                document.querySelector('.confirm_pin_indicator .bubble_wrapper').classList.add('shake');
+                                $cordovaVibration.vibrate(100);
+                                $timeout(function() {
+                                    scope.pinElements.pin = "";
+                                    scope.pinElements.confirmPin = "";
+                                    document.querySelector('.pin_indicator .bubble_wrapper').classList.remove('shake');
+                                    document.querySelector('.confirm_pin_indicator .bubble_wrapper').classList.remove('shake');
+                                }, 1000)
+                                scope.active = "pin";
+                            }
                         }
                     }
                 }

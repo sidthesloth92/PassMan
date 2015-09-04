@@ -1,5 +1,5 @@
 angular.module('PassMan.controllers', [])
-    .controller('UnlockController', ['$scope', '$utilityFunctions', '$state', '$rootScope', 'UnlockFactory', '$log', function($scope, $utilityFunctions, $state, $rootScope, UnlockFactory, $log) {
+    .controller('UnlockController', ['$scope', '$utilityFunctions', '$state', '$rootScope', '$timeout', '$cordovaVibration', 'UnlockFactory', '$log', function($scope, $utilityFunctions, $state, $rootScope, $timeout, $cordovaVibration, UnlockFactory, $log) {
         $rootScope.isPINSet = false;
 
         $scope.pinElements = {
@@ -55,6 +55,13 @@ angular.module('PassMan.controllers', [])
                     $utilityFunctions.timeout();
                     $state.go('main_list');
                 } else {
+                    document.querySelector('.login_pin_indicator .bubble_wrapper').classList.add('shake');
+                    $cordovaVibration.vibrate(100);
+                    $timeout(function() {
+                        $scope.pinElements.loginPin = '';
+                        document.querySelector('.login_pin_indicator .bubble_wrapper').classList.remove('shake');
+                    }, 1000);
+                    
                     $log.debug("PIN did not match");
                     $rootScope.masterPIN = '';
                 }

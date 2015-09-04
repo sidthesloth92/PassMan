@@ -3,7 +3,7 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('PassMan', ['ionic', 'PassMan.controllers', 'PassMan.services', 'PassMan.filters', 'PassMan.directives', 'PassMan.utils'])
+angular.module('PassMan', ['ionic', 'PassMan.controllers', 'PassMan.services', 'PassMan.filters', 'PassMan.directives', 'PassMan.utils', 'ngCordova'])
 
 .run(['$ionicPlatform', '$utilityFunctions', '$rootScope', '$ionicConfig', '$log', function($ionicPlatform, $utilityFunctions, $rootScope, $ionicConfig, $log) {
         $ionicPlatform.ready(function() {
@@ -15,6 +15,7 @@ angular.module('PassMan', ['ionic', 'PassMan.controllers', 'PassMan.services', '
             }
             if (window.StatusBar) {
                 StatusBar.styleDefault();
+                StatusBar.hide();
             }
 
             $log.debug('run end');
