@@ -46,15 +46,11 @@ angular.module('PassMan', ['ionic', 'PassMan.controllers', 'PassMan.services', '
             $rootScope.time = 0;
         });
 
+        document.addEventListener('keypress', function() {
+            $rootScope.time = 0;
+        });
+
         document.addEventListener("deviceready", $utilityFunctions.deviceReady, false);
-
-        function onDeviceReady() {
-            document.addEventListener("pause", onPause, false);
-        }
-
-        function onPause() {
-            console.log('apsu');
-        }
     }])
     .config(['$stateProvider', '$urlRouterProvider', '$utilityFunctionsProvider', '$logProvider', function($stateProvider, $urlRouterProvider, $utilityFunctionsProvider, $logProvider) {
         console.log("config start");

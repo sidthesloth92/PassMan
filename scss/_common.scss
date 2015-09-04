@@ -8,7 +8,7 @@ $theme-gradient :  -webkit-linear-gradient(top, rgba(54,215,243,1) 0%, rgba(54,2
 /*------------------------------------------------------- COMMON -----------------------------------------------*/
 @font-face {
   font-family: 'Lato';
-  src: url('fonts/Lato-Thin.ttf')  format('truetype');
+  src: url('../fonts/Lato-Light.ttf')  format('truetype');
 }
 
 
@@ -103,12 +103,14 @@ input::-webkit-placeholder {
 .keypad {
     position: absolute;
     width: 100%;
+    box-sizing: border-box;
     bottom: 45px;
+    heighg: 50%;
     background: $theme-gradient;
     .row {
         .col-33 {
             text-align: center;
-            padding: 20px 0px;
+            padding: 15px 0px;
             border-color: $theme-primary-color;
             color: $theme-font-color;
             border-style: solid;
@@ -118,6 +120,10 @@ input::-webkit-placeholder {
             font-weight: 200;
             &:nth-child(2) {
                 border-width: 0px 1px 1px 1px;
+            }
+
+            &:active {
+                background: $theme-primary-color;
             }
         }
         &:last-child {
@@ -140,8 +146,8 @@ key-indicator {
     .image_wrapper {
         text-align: center;
         img {
-            width: 192px;
-            height: 192px;
+            width: 120px;
+            height: 120px;
             margin-top: 20px;
         }
     }

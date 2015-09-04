@@ -16,13 +16,13 @@ angular.module('PassMan.utils', [])
                     deviceReady: function() {
                         document.addEventListener("pause", function() {
                             $log.debug("deviceReady: App paused: start");
+                            $state.go('unlock');
                             $ionicHistory.clearHistory();
                             $rootScope.masterPIN = '';
                             $log.debug("deviceReady: App paused: end");
                         }, false);
                         document.addEventListener("resume", function() {
                             $log.debug("deviceReady: App resumed: start");
-                            $state.go('unlock');
                             $log.debug("deviceReady: App resumed: end");
                         }, false);
                     },

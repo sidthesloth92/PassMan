@@ -2,7 +2,7 @@
 /*------------------------------------------------------- COMMON -----------------------------------------------*/
 @font-face {
   font-family: 'Lato';
-  src: url("fonts/Lato-Thin.ttf") format("truetype"); }
+  src: url("../fonts/Lato-Light.ttf") format("truetype"); }
 ion-content,
 ion-header-bar {
   background: #2D2E3A !important;
@@ -67,11 +67,13 @@ input::-webkit-placeholder {
 .keypad {
   position: absolute;
   width: 100%;
+  box-sizing: border-box;
   bottom: 45px;
+  heighg: 50%;
   background: -webkit-linear-gradient(top, #36d7f3 0%, #36d7f3 12%, #7989ff 100%); }
   .keypad .row .col-33 {
     text-align: center;
-    padding: 20px 0px;
+    padding: 15px 0px;
     border-color: #659FFB;
     color: #FFFFFF;
     border-style: solid;
@@ -81,6 +83,8 @@ input::-webkit-placeholder {
     font-weight: 200; }
     .keypad .row .col-33:nth-child(2) {
       border-width: 0px 1px 1px 1px; }
+    .keypad .row .col-33:active {
+      background: #659FFB; }
   .keypad .row:last-child .col-33 {
     border-bottom: 0px; }
 
@@ -94,8 +98,8 @@ key-indicator {
   key-indicator .image_wrapper {
     text-align: center; }
     key-indicator .image_wrapper img {
-      width: 192px;
-      height: 192px;
+      width: 120px;
+      height: 120px;
       margin-top: 20px; }
   key-indicator .bubble_wrapper {
     text-align: center;
