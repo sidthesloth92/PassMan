@@ -53,7 +53,6 @@ angular.module('PassMan', ['ionic', 'PassMan.controllers', 'PassMan.services', '
         document.addEventListener("deviceready", $utilityFunctions.deviceReady, false);
     }])
     .config(['$stateProvider', '$urlRouterProvider', '$utilityFunctionsProvider', '$logProvider', function($stateProvider, $urlRouterProvider, $utilityFunctionsProvider, $logProvider) {
-        console.log("config start");
         $stateProvider
             .state('unlock', {
                 url: '/unlock',

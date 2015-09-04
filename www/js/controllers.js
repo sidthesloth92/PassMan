@@ -159,7 +159,6 @@ angular.module('PassMan.controllers', [])
             }
 
             $scope.action = action;
-            addItemScope = $scope;
             $log.debug('AddItemController.beforeEnter: end');
         });
 
@@ -212,6 +211,12 @@ angular.module('PassMan.controllers', [])
         };
 
         $scope.fieldsEnabled = false;
+
+        $scope.$on('$ionicView.beforeEnter', function() {
+            $log.debug("ChangePinController.beforeEnter start");
+            $scope.clearPinChangingForm();
+            $log.debug("ChangePinController.beforeEnter end");
+        });
 
 
         $scope.checkPin = function(pinValue) {

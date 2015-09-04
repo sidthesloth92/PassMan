@@ -43,30 +43,31 @@ angular.module('PassMan.directives', []).directive('bottomMenu', ['$state', '$lo
                 pinElements: '=pinElements',
                 active: '=active',
                 setMasterPin: '&setMasterPin',
-                checkPin : '&checkPin'
+                checkPin: '&checkPin'
             },
             link: function(scope, element, attr) {
                 scope.keyPressed = function(value) {
                     if (value === "c") {
+                        if ((scope.active == "confirmPin") && (scope.pinElements[scope.active].length == 0)) {
+                            scope.active = "pin";
+                        }
                         scope.pinElements[scope.active] = "";
                     } else if (value === "d") {
+                        if ((scope.active == "confirmPin") && (scope.pinElements[scope.active].length == 0)) {
+                            scope.active = "pin";
+                        }
                         scope.pinElements[scope.active] = scope.pinElements[scope.active].substr(0, (scope.pinElements[scope.active].length - 1));
                     } else {
                         if (scope.pinElements[scope.active].length < 4) {
                             scope.pinElements[scope.active] += value;
                         }
-                    }
 
-                    if (scope.active == "pin") {
-                        if (scope.pinElements[scope.active].length == 4) {
-                            scope.active = "confirmPin";
-                        }
-                    } else if (scope.active == "confirmPin") {
-                        if (value == "d" && (scope.pinElements[scope.active].length == 0)) {
-                            scope.active = "pin";
+                        if (scope.active == "pin") {
+                            if (scope.pinElements[scope.active].length == 4) {
+                                scope.active = "confirmPin";
+                            }
                         }
                     }
-
 
                     if (scope.active == "loginPin") {
                         if (scope.pinElements[scope.active].length == 4) {
@@ -74,7 +75,6 @@ angular.module('PassMan.directives', []).directive('bottomMenu', ['$state', '$lo
                         }
                     } else {
                         if ((scope.pinElements.pin.length == 4) && (scope.pinElements.confirmPin.length == 4) && (scope.pinElements.pin === scope.pinElements.confirmPin)) {
-                            directiveScope = scope;
                             scope.setMasterPin();
                         }
                     }
