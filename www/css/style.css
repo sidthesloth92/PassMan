@@ -84,7 +84,7 @@ input::-webkit-placeholder {
     .keypad .row .col-33:nth-child(2) {
       border-width: 0px 1px 1px 1px; }
     .keypad .row .col-33:active {
-      background: #659FFB; }
+      background: -webkit-linear-gradient(top, transparent 0%, transparent 12%, rgba(121, 137, 255, 0.5) 100%); }
   .keypad .row:last-child .col-33 {
     border-bottom: 0px; }
 

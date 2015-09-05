@@ -41,14 +41,17 @@ angular.module('PassMan', ['ionic', 'PassMan.controllers', 'PassMan.services', '
 
         document.addEventListener('click', function() {
             $rootScope.time = 0;
+            $rootScope.masterPIN = "";
         });
 
         document.addEventListener('touch', function() {
             $rootScope.time = 0;
+            $rootScope.masterPIN = "";
         });
 
         document.addEventListener('keypress', function() {
             $rootScope.time = 0;
+            $rootScope.masterPIN = "";
         });
 
         document.addEventListener("deviceready", $utilityFunctions.deviceReady, false);
@@ -56,19 +59,23 @@ angular.module('PassMan', ['ionic', 'PassMan.controllers', 'PassMan.services', '
     .config(['$stateProvider', '$urlRouterProvider', '$utilityFunctionsProvider', '$logProvider', function($stateProvider, $urlRouterProvider, $utilityFunctionsProvider, $logProvider) {
         $stateProvider
             .state('unlock', {
+                cache : false,
                 url: '/unlock',
                 templateUrl: 'templates/pages/unlock.html',
                 controller: 'UnlockController'
             })
             .state('main_list', {
+                cache: false,
                 url: '/main_list',
                 templateUrl: 'templates/pages/main_list.html',
                 controller: 'MainListController'
             }).state('add_item', {
+                cache: false,
                 url: '/add_item:action:eid',
                 templateUrl: 'templates/pages/add_item.html',
                 controller: 'AddItemController'
             }).state('change_pin', {
+                cache: false,
                 url: '/change_pin',
                 templateUrl: 'templates/pages/change_pin.html',
                 controller: 'ChangePinController'

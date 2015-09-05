@@ -237,6 +237,9 @@ angular.module('PassMan.utils', [])
                     },
                     COMMON: {},
                     timeout: function() {
+                        if(interval) {
+                            $interval.cancel(interval);
+                        }
                         var interval = $interval(function() {
                             $rootScope.time++;
                             console.log($rootScope.time);

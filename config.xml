@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.passman" version="1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.db.passman" version="1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>PassMan</name>
   <description>
-        A simple no Interner password manager.
+        A simple no Internet password manager.
   </description>
   <author email="dinaenrique@gmail.com" href="http://dbwriteups.wordpress.com/">
       Someone who loves everything programming, Ice cream and Cats.

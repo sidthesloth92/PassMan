@@ -51,9 +51,13 @@ angular.module('PassMan.controllers', [])
             UnlockFactory.checkPIN($scope.pinElements.loginPin).then(function(result) {
                 if (result) {
                     $log.debug("PIN matches");
-                    $rootScope.masterPIN = $scope.pinElements.loginPin;
-                    $utilityFunctions.timeout();
-                    $state.go('main_list');
+                    
+                    $timeout(function() {
+                        $rootScope.masterPIN = $scope.pinElements.loginPin;
+                        $scope.pinElements.loginPin = "";
+                        $utilityFunctions.timeout();
+                        $state.go('main_list');
+                    }, 100); 
                 } else {
                     document.querySelector('.login_pin_indicator .bubble_wrapper').classList.add('shake');
                     $cordovaVibration.vibrate(100);

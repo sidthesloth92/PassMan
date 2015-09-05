@@ -4,6 +4,7 @@ $theme-primary-color: #659FFB;
 $theme-font-color: #FFFFFF;
 $theme-background-color: #2D2E3A;
 $theme-gradient :  -webkit-linear-gradient(top, rgba(54,215,243,1) 0%, rgba(54,215,243,1) 12%, rgba(121,137,255,1) 100%);
+$keypad-button-gradient: -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 12%, rgba(121,137,255, 0.5) 100%);
 
 /*------------------------------------------------------- COMMON -----------------------------------------------*/
 @font-face {
@@ -123,7 +124,7 @@ input::-webkit-placeholder {
             }
 
             &:active {
-                background: $theme-primary-color;
+                background: $keypad-button-gradient;
             }
         }
         &:last-child {
