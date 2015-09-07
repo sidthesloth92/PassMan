@@ -40,23 +40,20 @@ angular.module('PassMan', ['ionic', 'PassMan.controllers', 'PassMan.services', '
         $rootScope.time = 0;
 
         document.addEventListener('click', function() {
-            $rootScope.time = 0;
-            $rootScope.masterPIN = "";
-        });
+            $rootScope.time = 0;  
+        })
 
         document.addEventListener('touch', function() {
             $rootScope.time = 0;
-            $rootScope.masterPIN = "";
         });
 
-        document.addEventListener('keypress', function() {
+        document.addEventListener('keyup', function() {
             $rootScope.time = 0;
-            $rootScope.masterPIN = "";
         });
 
         document.addEventListener("deviceready", $utilityFunctions.deviceReady, false);
     }])
-    .config(['$stateProvider', '$urlRouterProvider', '$utilityFunctionsProvider', '$logProvider', function($stateProvider, $urlRouterProvider, $utilityFunctionsProvider, $logProvider) {
+    .config(['$stateProvider', '$urlRouterProvider', '$utilityFunctionsProvider', '$compileProvider', '$logProvider', function($stateProvider, $urlRouterProvider, $utilityFunctionsProvider, $compileProvider, $logProvider) {
         $stateProvider
             .state('unlock', {
                 cache : false,
@@ -82,6 +79,7 @@ angular.module('PassMan', ['ionic', 'PassMan.controllers', 'PassMan.services', '
             });
         $urlRouterProvider.otherwise('/unlock');
 
+        $compileProvider.debugInfoEnabled(false);
         $logProvider.debugEnabled(false);
 
         $utilityFunctionsProvider.DB.config('PassMan.db');

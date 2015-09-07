@@ -19,6 +19,11 @@ angular.module('PassMan.utils', [])
                             $state.go('unlock');
                             $ionicHistory.clearHistory();
                             $rootScope.masterPIN = '';
+                            if(PassMan.interval) {
+                                $log.debug("clearing interval on pause");
+                                clearInterval(PassMan.interval);
+                                PassMan.interval = null;
+                            }
                             $log.debug("deviceReady: App paused: end");
                         }, false);
                         document.addEventListener("resume", function() {
@@ -237,15 +242,17 @@ angular.module('PassMan.utils', [])
                     },
                     COMMON: {},
                     timeout: function() {
-                        if(interval) {
-                            $interval.cancel(interval);
+                        if(PassMan.interval) {
+                            clearInterval(PassMan.interval);
+                            PassMan.interval = null;
                         }
-                        var interval = $interval(function() {
+                        PassMan.interval = setInterval(function() {
                             $rootScope.time++;
-                            console.log($rootScope.time);
                             if ($rootScope.time == PassMan.TIME_OUT) {
-                                $interval.cancel(interval);
-                                console.dir(this);
+                                $log.debug("Timed out. Clearing Interval");
+                                clearInterval(PassMan.interval);
+                                PassMan.interval = null;
+
                                 $ionicPopup.alert({
                                     "title" : "Timeout", 
                                     "template" : "Your session has expired. Please try again."

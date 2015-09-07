@@ -8,15 +8,15 @@
                 <div class="list">
                     <label class="item item-input item-floating-label">
                         <span class="input-label">Title</span>
-                        <input type="text" name="title" placeholder="Title" ng-model="addItem.title" required>
+                        <input type="text" name="title" placeholder="Title" ng-model="addItem.title" autocorrect="off" autocapitalize="none" required>
                     </label>
                     <label class="item item-input item-floating-label">
                         <span class="input-label">Username</span>
-                        <input type="text" name="username" placeholder="Username" ng-model="addItem.username" required>
+                        <input type="text" name="username" placeholder="Username" ng-model="addItem.username" autocorrect="off" autocapitalize="none" required>
                     </label>
                     <label class="item item-input item-floating-label">
                         <span class="input-label">Password</span>
-                        <input type="text" name="password" placeholder="Password" ng-model="addItem.password" required>
+                        <input type="text" name="password" placeholder="Password" ng-model="addItem.password" autocorrect="off" autocapitalize="none" required>
                     </label>
                     <div class="error_messages_wrapper">
                         <span class="errorMessage" ng-show="((!addItemForm.title.$pristine && addItemForm.title.$invalid) || (addItemForm.$submitted && addItemForm.title.$invalid)) || ((!addItemForm.username.$pristine && addItemForm.username.$invalid) || (addItemForm.$submitted && addItemForm.username.$invalid)) || ((!addItemForm.password.$pristine && addItemForm.password.$invalid) || (addItemForm.$submitted && addItemForm.password.$invalid))">All fields are mandatory</span>
