@@ -184,6 +184,8 @@ angular.module('PassMan.controllers', [])
                         $log.debug('AddItemController.addItemFormSubmit: Entry added successfully');
                         $utilityFunctions.showAlert("Entry Added", "Entry Added Successfully");
                         $scope.resetAddItemForm(addItemForm);
+
+                        $state.go('main_list');
                     }, function(error) {
                         $log.error('AddItemController.addItemFormSubmit: Add Error: ' + error);
                         $utilityFunctions.showAlert("Error", "Some error occurred. Please try again.");
