@@ -137,10 +137,12 @@ key-indicator {
 .main_list_wrapper .main_list .user_entry {
   background: #2D2E3A;
   color: #FFFFFF; }
-.main_list_wrapper .main_list ion-item.active .item-content {
-  background: -webkit-linear-gradient(top, #36d7f3 0%, #36d7f3 12%, #7989ff 100%) !important; }
 .main_list_wrapper .main_list ion-item {
   margin-top: 1px; }
+  .main_list_wrapper .main_list ion-item.active .item-content {
+    background: -webkit-linear-gradient(top, #36d7f3 0%, #36d7f3 12%, #7989ff 100%) !important; }
+  .main_list_wrapper .main_list ion-item.active .swipe_icon {
+    color: white !important; }
 .main_list_wrapper .main_list .user_entry {
   position: relative; }
   .main_list_wrapper .main_list .user_entry div[class^="user_entry_"] > i {
@@ -156,6 +158,11 @@ key-indicator {
     bottom: 0px;
     right: 25px;
     font-size: 25px; }
+.main_list_wrapper .main_list .swipe_icon {
+  position: absolute;
+  right: 10px;
+  font-size: 12px;
+  top: 16px; }
 .main_list_wrapper .no_entry_message {
   padding: 10px;
   text-align: center; }

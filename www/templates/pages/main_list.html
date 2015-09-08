@@ -20,6 +20,7 @@
                         <div ng-repeat="item in itemList | customSearchFilter:searchTerm.title">
                             <ion-item ng-click="toggleItemShown(item)" ng-class="{ active : isItemShown(item)}">
                                 {{ item.title | decrypt }}
+                                <i class="icon ion-ios-arrow-left swipe_icon"></i>
                                 <ion-option-button class="button-dark button-outline icon ion-edit" ui-sref="add_item({ action : 'edit', eid : {{ item.eid }} })"></ion-option-button>
                                 <ion-option-button class="button-dark button-outline icon ion-trash-a" ng-click="deleteEntry({{ item.eid }})"></ion-option-button>
                             </ion-item>
