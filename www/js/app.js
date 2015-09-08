@@ -21,6 +21,11 @@ angular.module('PassMan', ['ionic', 'PassMan.controllers', 'PassMan.services', '
             $log.debug('run end');
         });
 
+
+        $ionicPlatform.onHardwareBackButton(function() {
+            $utilityFunctions.backButtonHandler();
+        });
+
         $ionicConfig.views.swipeBackEnabled(false);
 
         //creating the database
@@ -40,7 +45,7 @@ angular.module('PassMan', ['ionic', 'PassMan.controllers', 'PassMan.services', '
         $rootScope.time = 0;
 
         document.addEventListener('click', function() {
-            $rootScope.time = 0;  
+            $rootScope.time = 0;
         })
 
         document.addEventListener('touch', function() {
@@ -49,6 +54,15 @@ angular.module('PassMan', ['ionic', 'PassMan.controllers', 'PassMan.services', '
 
         document.addEventListener('keyup', function() {
             $rootScope.time = 0;
+            console.log('keyup');
+        });
+        document.addEventListener('keypress', function() {
+            $rootScope.time = 0;
+            console.log('keypress');
+        });
+        document.addEventListener('keydown', function() {
+            $rootScope.time = 0;
+            console.log('keydown');
         });
 
         document.addEventListener("deviceready", $utilityFunctions.deviceReady, false);
@@ -56,7 +70,7 @@ angular.module('PassMan', ['ionic', 'PassMan.controllers', 'PassMan.services', '
     .config(['$stateProvider', '$urlRouterProvider', '$utilityFunctionsProvider', '$compileProvider', '$logProvider', function($stateProvider, $urlRouterProvider, $utilityFunctionsProvider, $compileProvider, $logProvider) {
         $stateProvider
             .state('unlock', {
-                cache : false,
+                cache: false,
                 url: '/unlock',
                 templateUrl: 'templates/pages/unlock.html',
                 controller: 'UnlockController'

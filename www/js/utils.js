@@ -19,7 +19,7 @@ angular.module('PassMan.utils', [])
                             $state.go('unlock');
                             $ionicHistory.clearHistory();
                             $rootScope.masterPIN = '';
-                            if(PassMan.interval) {
+                            if (PassMan.interval) {
                                 $log.debug("clearing interval on pause");
                                 clearInterval(PassMan.interval);
                                 PassMan.interval = null;
@@ -242,25 +242,32 @@ angular.module('PassMan.utils', [])
                     },
                     COMMON: {},
                     timeout: function() {
-                        if(PassMan.interval) {
+                        if (PassMan.interval) {
                             clearInterval(PassMan.interval);
                             PassMan.interval = null;
                         }
                         PassMan.interval = setInterval(function() {
                             $rootScope.time++;
+                            console.log($rootScope.time);
                             if ($rootScope.time == PassMan.TIME_OUT) {
                                 $log.debug("Timed out. Clearing Interval");
                                 clearInterval(PassMan.interval);
                                 PassMan.interval = null;
 
                                 $ionicPopup.alert({
-                                    "title" : "Timeout", 
-                                    "template" : "Your session has expired. Please try again."
+                                    "title": "Timeout",
+                                    "template": "Your session has expired. Please try again."
                                 });
                                 $state.go('unlock');
                                 $ionicHistory.clearHistory();
                             }
                         }, 1000);
+                    },
+                    backButtonHandler: function() {
+                        $rootScope.time = 0;
+                        if ($ionicHistory.currentStateName() == "main_list") {
+                            navigator.app.exitApp();
+                        }
                     }
                 };
             }]
