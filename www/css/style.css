@@ -3,6 +3,7 @@
 @font-face {
   font-family: 'Lato';
   src: url("../fonts/Lato-Light.ttf") format("truetype"); }
+ion-view,
 ion-content,
 ion-header-bar {
   background: #2D2E3A !important;
@@ -166,6 +167,8 @@ key-indicator {
 .main_list_wrapper .no_entry_message {
   padding: 10px;
   text-align: center; }
+.main_list_wrapper .bottom_filler {
+  height: 50px; }
 
 .list .item.accordion-content {
   line-height: 38px;

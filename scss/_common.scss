@@ -12,7 +12,7 @@ $keypad-button-gradient: -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(
   src: url('../fonts/Lato-Light.ttf')  format('truetype');
 }
 
-
+ion-view,
 ion-content,
 ion-header-bar {
     background: $theme-background-color !important;
