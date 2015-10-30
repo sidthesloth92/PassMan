@@ -242,26 +242,26 @@ angular.module('PassMan.utils', [])
                     },
                     COMMON: {},
                     timeout: function() {
-                        // if (PassMan.interval) {
-                        //     clearInterval(PassMan.interval);
-                        //     PassMan.interval = null;
-                        // }
-                        // PassMan.interval = setInterval(function() {
-                        //     $rootScope.time++;
-                        //     console.log($rootScope.time);
-                        //     if ($rootScope.time == PassMan.TIME_OUT) {
-                        //         $log.debug("Timed out. Clearing Interval");
-                        //         clearInterval(PassMan.interval);
-                        //         PassMan.interval = null;
+                        if (PassMan.interval) {
+                            clearInterval(PassMan.interval);
+                            PassMan.interval = null;
+                        }
+                        PassMan.interval = setInterval(function() {
+                            $rootScope.time++;
+                            
+                            if ($rootScope.time == PassMan.TIME_OUT) {
+                                $log.debug("Timed out. Clearing Interval");
+                                clearInterval(PassMan.interval);
+                                PassMan.interval = null;
 
-                        //         $ionicPopup.alert({
-                        //             "title": "Timeout",
-                        //             "template": "Your session has expired. Please try again."
-                        //         });
-                        //         $state.go('unlock');
-                        //         $ionicHistory.clearHistory();
-                        //     }
-                        // }, 1000);
+                                $ionicPopup.alert({
+                                    "title": "Timeout",
+                                    "template": "Your session has expired. Please try again."
+                                });
+                                $state.go('unlock');
+                                $ionicHistory.clearHistory();
+                            }
+                        }, 1000);
                     },
                     backButtonHandler: function() {
                         $rootScope.time = 0;

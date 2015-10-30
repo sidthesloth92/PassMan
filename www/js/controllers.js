@@ -51,13 +51,13 @@ angular.module('PassMan.controllers', [])
             UnlockFactory.checkPIN($scope.pinElements.loginPin).then(function(result) {
                 if (result) {
                     $log.debug("PIN matches");
-                    
+
                     $timeout(function() {
                         $rootScope.masterPIN = $scope.pinElements.loginPin;
                         $scope.pinElements.loginPin = "";
                         $utilityFunctions.timeout();
                         $state.go('main_list');
-                    }, 100); 
+                    }, 100);
                 } else {
                     document.querySelector('.login_pin_indicator .bubble_wrapper').classList.add('shake');
                     $cordovaVibration.vibrate(100);
@@ -65,7 +65,7 @@ angular.module('PassMan.controllers', [])
                         $scope.pinElements.loginPin = '';
                         document.querySelector('.login_pin_indicator .bubble_wrapper').classList.remove('shake');
                     }, 1000);
-                    
+
                     $log.debug("PIN did not match");
                     $rootScope.masterPIN = '';
                 }
@@ -228,29 +228,42 @@ angular.module('PassMan.controllers', [])
         $scope.$on('$ionicView.beforeEnter', function() {
             $log.debug("ChangePinController.beforeEnter start");
             $scope.clearPinChangingForm();
+            $scope.fieldsEnabled = false;
+            $scope.wrongPin = false;
             $log.debug("ChangePinController.beforeEnter end");
         });
 
 
-        $scope.checkPin = function(pinValue) {
+        $scope.checkPin = function(pinValue, pinChangingForm) {
             $log.debug('ChangePinController.checkPin: start');
-
+            console.log('in hrere');
             if (pinValue) {
                 $log.debug('ChangePinController.checkPin: PINValue: ' + pinValue);
                 UnlockFactory.checkPIN(pinValue).then(function(result) {
                     if (result) {
                         $log.debug('ChangePinController.checkPin: success');
                         $scope.fieldsEnabled = true;
+                        $scope.wrongPin = false;
                     } else {
                         $log.debug('ChangePinController.checkPin: failed');
                         $scope.fieldsEnabled = false;
                         $scope.changePinForm.newPin = '';
                         $scope.changePinForm.confirmPin = '';
+                        pinChangingForm.newPin.$pristine = true;
+                        pinChangingForm.confirmPin.$pristine = true;
+                        $scope.wrongPin = true;
                     }
                 }, function(error) {
                     $log.error('ChangePinController.checkPin: error' + error);
                     $utilityFunctions.showAlert('Error', 'Sorry some error occurred');
                 });
+            } else {
+                $scope.fieldsEnabled = false;
+                $scope.changePinForm.newPin = '';
+                $scope.changePinForm.confirmPin = '';
+                pinChangingForm.newPin.$pristine = true;
+                pinChangingForm.confirmPin.$pristine = true;
+                $scope.wrongPin = false;
             }
 
             $log.debug('ChangePinController.checkPin: end');

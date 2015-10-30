@@ -54,15 +54,12 @@ angular.module('PassMan', ['ionic', 'PassMan.controllers', 'PassMan.services', '
 
         document.addEventListener('keyup', function() {
             $rootScope.time = 0;
-            console.log('keyup');
         });
         document.addEventListener('keypress', function() {
             $rootScope.time = 0;
-            console.log('keypress');
         });
         document.addEventListener('keydown', function() {
             $rootScope.time = 0;
-            console.log('keydown');
         });
 
         document.addEventListener("deviceready", $utilityFunctions.deviceReady, false);

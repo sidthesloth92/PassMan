@@ -8,13 +8,15 @@
                 <div class="list">
                     <label class="item item-input item-floating-label">
                         <span class="input-label">Old PIN</span>
-                        <input type="tel" name="oldPin" placeholder="Old PIN" ng-model="changePinForm.oldPin" required ng-change="checkPin(changePinForm.oldPin)">
+                        <input type="tel" name="oldPin" placeholder="Old PIN" ng-model="changePinForm.oldPin" required ng-keyup="checkPin(changePinForm.oldPin, pinChangingForm)" ng-pattern="/^[0-9]{4}$/g">
                     </label>
+                     <span ng-show="(pinChangingForm.oldPin.$invalid && !pinChangingForm.oldPin.$pristine) || (pinChangingForm.$submitted && pinChangingForm.oldPin.$invalid)" class="errorMessage">PIN should be a 4 digit number</span>
+                    <span ng-show="wrongPin" class="errorMessage">Wrong Pin</span>
                     <label class="item item-input item-floating-label">
                         <span class="input-label">New PIN</span>
                         <input type="tel" name="newPin" placeholder="New PIN" ng-model="changePinForm.newPin" ng-disabled="!fieldsEnabled" ng-pattern="/^[0-9]{4}$/g" required>
                     </label>
-                    <span ng-show="pinChangingForm.newPin.$invalid && !pinChangingForm.newPin.$pristine" class="errorMessage">PIN should be a 4 digit number</span>
+                    <span ng-show="(fieldsEnabled && pinChangingForm.newPin.$invalid && !pinChangingForm.newPin.$pristine) || (fieldsEnabled && pinChangingForm.$submitted && pinChangingForm.newPin.$invalid && !pinChangingForm.newPin.$pristine)" class="errorMessage">PIN should be a 4 digit number</span>
                     <label class="item item-input item-floating-label">
                         <span class="input-label">Confirm PIN</span>
                         <input type="tel" name="confirmPin" placeholder="Confirm PIN" ng-model="changePinForm.confirmPin" ng-disabled="!fieldsEnabled" ng-pattern="/^[0-9]{4}$/g" required>
