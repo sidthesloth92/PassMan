@@ -146,6 +146,7 @@ angular.module('PassMan.controllers', [])
         };
 
         $scope.action = "";
+        $scope.pageTitle = "";
 
         $scope.$on('$ionicView.beforeEnter', function() {
             $log.debug('AddItemController.beforeEnter: start');
@@ -154,7 +155,7 @@ angular.module('PassMan.controllers', [])
 
             if (action === "edit") {
                 //get entry from db and set the item
-
+                $scope.pageTitle = "Edit Entry";
                 AddItemFactory.retrieveEntry($stateParams.eid, $rootScope.masterPIN).then(function(result) {
                     $log.debug('AddItemController.beforeEnter: Item retrieved Successfully: ');
                     $log.debug(result);
@@ -167,6 +168,9 @@ angular.module('PassMan.controllers', [])
                     $log.error('AddItemController.beforeEnter: Error: ' + error);
                     $utilityFunctions.showAlert("Error", "Entry retrieval failed");
                 });
+            }
+            else {
+                $scope.pageTitle = "Add New Entry";
             }
 
             $scope.action = action;
@@ -195,6 +199,9 @@ angular.module('PassMan.controllers', [])
                     AddItemFactory.editItemFormSubmit($scope.addItem, $rootScope.masterPIN, $scope.addItem.eid).then(function(result) {
                         $log.debug('AddItemController.addItemFormSubmit: Entry edited successfully');
                         $utilityFunctions.showAlert("Entry Edited", "Entry Edit Success");
+                        $scope.resetAddItemForm(addItemForm);
+
+                        $state.go('main_list');
                     }, function(error) {
                         $log.error('AddItemController.addItemFormSubmit: Edit Error: ' + error);
                         $utilityFunctions.showAlert("Error", "Some error occurred. Please try again.");
